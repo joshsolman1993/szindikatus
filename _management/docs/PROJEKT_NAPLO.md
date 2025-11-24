@@ -46,11 +46,11 @@ Cél: Egy játszható alapverzió, ahol regisztrálni lehet, van energiarendszer
 
 [x] 🟢 Prototípus: Landing Page UI Design
 
-[ ] 🔴 React App inicializálás + Routing beállítása
+[x] 🟢 React App inicializálás + Routing beállítása
 
-[ ] 🔴 API kommunikációs réteg (Axios/Fetch interceptorokkal)
+[x] 🟢 API kommunikációs réteg (Axios/Fetch interceptorokkal)
 
-[ ] 🔴 Bejelentkezés/Regisztráció űrlapok bekötése
+[x] 🟢 Bejelentkezés/Regisztráció űrlapok bekötése
 
 ⚔️ FÁZIS 2: Interakció és Harc
 
@@ -77,6 +77,12 @@ Cél: Hosszú távú játékélmény biztosítása.
 [ ] 🔴 Dinamikus Piac (Árfolyam változás logika)
 
 📝 Változásnapló (Changelog)
+
+[0.1.6] - 2025-11-24
+
+Feature: Frontend inicializálás (Vite + React + TypeScript).
+Feature: Auth Context és API kliens (Axios Interceptors).
+Feature: UI Alapok (Landing, Login, Register, Dashboard).
 
 [0.1.5] - 2025-11-24
 
