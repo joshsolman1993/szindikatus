@@ -154,6 +154,15 @@ Cél: Hosszú távú játékélmény biztosítása.
 
 📝 Változásnapló (Changelog)
 
+[0.2.1] - 2025-11-24
+
+Feature: Item Shop (Feketepiac) és Inventory rendszer.
+Feature: Item és Inventory entitások, MarketService, InventoryService.
+Feature: Vásárlás (tranzakcióban), Felszerelés/Levétel logika.
+UI: BlackMarketPage - shop items, vásárlás.
+UI: InventoryPage - leltár lista, felszerelés kezelése.
+Technikai: Auto-unequip ugyanolyan típusú tárgyaknál.
+
 [0.2.0] - 2025-11-24
 
 Feature: PvP Harcrendszer (Combat System) implementálva.

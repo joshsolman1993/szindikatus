@@ -10,6 +10,9 @@ import { AuthModule } from './auth/auth.module';
 import { CrimesModule } from './crimes/crimes.module';
 import { CommonModule } from './common/common.module';
 import { FightModule } from './fight/fight.module';
+import { ItemsModule } from './items/items.module';
+import { MarketModule } from './market/market.module';
+import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
   imports: [
@@ -38,8 +41,12 @@ import { FightModule } from './fight/fight.module';
     CrimesModule,
     CommonModule,
     FightModule,
+    ItemsModule,
+    MarketModule,
+    InventoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule { }
+

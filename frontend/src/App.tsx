@@ -8,6 +8,8 @@ import { DashboardPage } from './pages/DashboardPage';
 import { CrimesPage } from './pages/CrimesPage';
 import { GymPage } from './pages/GymPage';
 import { TheStreetsPage } from './pages/TheStreetsPage';
+import { BlackMarketPage } from './pages/BlackMarketPage';
+import { InventoryPage } from './pages/InventoryPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
             <Route path="/crimes" element={<CrimesPage />} />
             <Route path="/gym" element={<GymPage />} />
             <Route path="/streets" element={<TheStreetsPage />} />
+            <Route path="/market" element={<BlackMarketPage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
           </Route>
 
           {/* Fallback */}
