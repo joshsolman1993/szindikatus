@@ -2,6 +2,7 @@ import { Controller, Get, Post, UseGuards, Request, Body } from '@nestjs/common'
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { GameBalance } from '../config/game-balance.config';
+import { PublicUserDto } from './dto/public-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -35,5 +36,13 @@ export class UsersController {
             stats: user.stats,
             energy: user.energy,
         };
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get()
+    async getPlayers(@Request() req) {
+        const players = await this.usersService.findAllExcept(req.user.userId);
+        // Biztonságos DTO-vá alakítás - nem küldjük a jelszót, emailt
+        return players.map(player => new PublicUserDto(player));
     }
 }

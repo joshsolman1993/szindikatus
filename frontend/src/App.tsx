@@ -7,6 +7,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { CrimesPage } from './pages/CrimesPage';
 import { GymPage } from './pages/GymPage';
+import { TheStreetsPage } from './pages/TheStreetsPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/crimes" element={<CrimesPage />} />
             <Route path="/gym" element={<GymPage />} />
+            <Route path="/streets" element={<TheStreetsPage />} />
           </Route>
 
           {/* Fallback */}

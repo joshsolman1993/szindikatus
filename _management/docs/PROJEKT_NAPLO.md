@@ -154,6 +154,15 @@ Cél: Hosszú távú játékélmény biztosítása.
 
 📝 Változásnapló (Changelog)
 
+[0.1.9] - 2025-11-24
+
+Feature: "Az Utca" (The Streets) - Játékos lista implementálva.
+Feature: PublicUserDto biztonságos adatkezeléshez (nincs jelszó, email).
+Feature: Avatar generálás DiceBear API-val.
+Feature: Keresőmező játékosok szűréséhez.
+UI: PlayerCard komponens, Támadás gomb (placeholder).
+Technikai: findAllExcept metódus (utolsó 50 aktív játékos).
+
 [0.1.8] - 2025-11-24
 
 Feature: Konditerem (Gym) rendszer implementálva.

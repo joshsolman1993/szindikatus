@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { User } from './entities/user.entity';
 import { RegisterDto } from '../auth/dto/auth.dto';
 import * as bcrypt from 'bcrypt';
@@ -42,6 +42,20 @@ export class UsersService {
 
     async findById(id: string): Promise<User | null> {
         return this.usersRepository.findOne({ where: { id } });
+    }
+
+    async findAllExcept(userId: string): Promise<User[]> {
+        // Utolsó 50 aktív játékos, kivéve saját magát
+        // Rendezés: legutóbb frissített (updatedAt) szerint
+        return this.usersRepository.find({
+            where: {
+                id: Not(userId),
+            },
+            order: {
+                updatedAt: 'DESC',
+            },
+            take: 50,
+        });
     }
 
     async refillEnergy(userId: string): Promise<void> {
