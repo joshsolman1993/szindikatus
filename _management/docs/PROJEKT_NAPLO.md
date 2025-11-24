@@ -18,27 +18,27 @@ Cél: Egy játszható alapverzió, ahol regisztrálni lehet, van energiarendszer
 
 [x] 🟢 Projekt inicializálás (Node.js, NestJS, Git repo)
 
-[~] 🟡 Adatbázis kapcsolat kiépítése (PostgreSQL + TypeORM/Prisma)
+[x] 🟢 Adatbázis kapcsolat kiépítése (PostgreSQL + TypeORM/Prisma)
 
-[ ] 🔴 Felhasználó regisztráció (Auth) + Jelszó hash (Argon2/Bcrypt)
+[x] 🟢 Felhasználó regisztráció (Auth) + Jelszó hash (Argon2/Bcrypt)
 
-[ ] 🔴 Login rendszer + JWT Token generálás
+[x] 🟢 Login rendszer + JWT Token generálás
 
-[ ] 🔴 Hibakezelő rendszer (Global Exception Filter) beállítása (Kritikus!)
+[x] 🟢 Hibakezelő rendszer (Global Exception Filter) beállítása (Kritikus!)
 
 1.2. Játékmechanika (Core Loop)
 
-[ ] 🔴 Játékos profil adatbázis séma (Cash, Energy, Stats)
+[x] 🟢 Játékos profil adatbázis séma (Cash, Energy, Stats)
 
 [ ] 🔴 Energia visszatöltődés logika (Cron job / Timestamp számítás)
 
-[ ] 🔴 "Bűntények" adatbázis tábla feltöltése (Seed data)
+[x] 🟢 "Bűntények" adatbázis tábla feltöltése (Seed data)
 
-[ ] 🔴 Bűntény elkövetése logika (API Endpoint: /crimes/commit)
+[x] 🟢 Bűntény elkövetése logika (API Endpoint: /crimes/commit)
 
-[ ] 🔴 Siker/Bukás kalkuláció
+[x] 🟢 Siker/Bukás kalkuláció
 
-[ ] 🔴 Jutalom jóváírása (Tranzakcióban!)
+[x] 🟢 Jutalom jóváírása (Tranzakcióban!)
 
 1.3. Frontend (Kliens)
 
@@ -77,6 +77,24 @@ Cél: Hosszú távú játékélmény biztosítása.
 [ ] 🔴 Dinamikus Piac (Árfolyam változás logika)
 
 📝 Változásnapló (Changelog)
+
+[0.1.4] - 2025-11-24
+
+Feature: Bűntények (Crimes) modul implementálva.
+Feature: Adatbázis seedelés (5 alap bűntény).
+Feature: Tranzakcionális bűntény végrehajtás (Energia levonás, Pénz jóváírás).
+
+[0.1.3] - 2025-11-24
+
+Feature: Teljes Auth rendszer (Regisztráció, Login, JWT).
+Feature: Jelszó hashelés (Bcrypt) és validáció (Class-Validator).
+Technikai: Users és Auth modulok implementálva.
+
+[0.1.2] - 2025-11-24
+
+Technikai: Adatbázis kapcsolat konfigurálva (TypeORM).
+Technikai: Globális hibakezelő (AllExceptionsFilter) implementálva.
+Feature: User entitás és GameBalance config létrehozva.
 
 [0.1.1] - 2025-11-24
 
