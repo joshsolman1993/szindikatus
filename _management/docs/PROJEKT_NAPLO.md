@@ -154,6 +154,15 @@ Cél: Hosszú távú játékélmény biztosítása.
 
 📝 Változásnapló (Changelog)
 
+[0.2.2] - 2025-11-24
+
+Feature: Felszerelés integráció (Equipment Integration).
+Feature: UsersService.calculateCombatStats - felszerelés bónuszok számítása.
+Feature: FightService - harc közben felszerelés bónuszok figyelembe vétele.
+Feature: UsersController - profil és játékos lista API bővítése computed statokkal.
+UI: Dashboard - Harci statisztikák megjelenítése bónuszokkal.
+UI: The Streets - Becsült erő tartalmazza a felszerelést.
+
 [0.2.1] - 2025-11-24
 
 Feature: Item Shop (Feketepiac) és Inventory rendszer.

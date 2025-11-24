@@ -2,6 +2,7 @@ import { Injectable, ConflictException, InternalServerErrorException } from '@ne
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not } from 'typeorm';
 import { User } from './entities/user.entity';
+import { Inventory } from '../items/entities/inventory.entity';
 import { RegisterDto } from '../auth/dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -10,6 +11,8 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private usersRepository: Repository<User>,
+        @InjectRepository(Inventory)
+        private inventoryRepository: Repository<Inventory>,
     ) { }
 
     async create(registerDto: RegisterDto): Promise<User> {
@@ -108,5 +111,46 @@ export class UsersService {
             await manager.save(user);
             return user;
         });
+    }
+    async calculateCombatStats(userId: string): Promise<{
+        totalStr: number;
+        totalTol: number;
+        totalSpd: number;
+        totalInt: number;
+        bonuses: { str: number; def: number; spd: number };
+        equippedItems: string[];
+    }> {
+        const user = await this.usersRepository.findOne({ where: { id: userId } });
+        if (!user) throw new ConflictException('User not found');
+
+        const equippedInventory = await this.inventoryRepository.find({
+            where: { userId, isEquipped: true },
+            relations: ['item'],
+        });
+
+        let bonusStr = 0;
+        let bonusDef = 0;
+        let bonusSpd = 0;
+        const equippedItemNames: string[] = [];
+
+        for (const inv of equippedInventory) {
+            bonusStr += inv.item.bonusStr;
+            bonusDef += inv.item.bonusDef;
+            bonusSpd += inv.item.bonusSpd;
+            equippedItemNames.push(inv.item.name);
+        }
+
+        return {
+            totalStr: user.stats.str + bonusStr,
+            totalTol: user.stats.tol + bonusDef,
+            totalSpd: user.stats.spd + bonusSpd,
+            totalInt: user.stats.int,
+            bonuses: {
+                str: bonusStr,
+                def: bonusDef,
+                spd: bonusSpd,
+            },
+            equippedItems: equippedItemNames,
+        };
     }
 }

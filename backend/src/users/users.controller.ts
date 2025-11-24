@@ -12,11 +12,13 @@ export class UsersController {
     @Get('profile')
     async getProfile(@Request() req) {
         const user = await this.usersService.findById(req.user.userId);
+        const combatStats = await this.usersService.calculateCombatStats(req.user.userId);
         return {
             ...user,
             maxEnergy: GameBalance.MAX_ENERGY,
             maxNerve: GameBalance.MAX_NERVE,
             maxHp: GameBalance.MAX_HP,
+            computed: combatStats,
         };
     }
 
@@ -42,7 +44,12 @@ export class UsersController {
     @Get()
     async getPlayers(@Request() req) {
         const players = await this.usersService.findAllExcept(req.user.userId);
-        // Biztonságos DTO-vá alakítás - nem küldjük a jelszót, emailt
-        return players.map(player => new PublicUserDto(player));
+
+        const playersWithStats = await Promise.all(players.map(async (player) => {
+            const stats = await this.usersService.calculateCombatStats(player.id);
+            return new PublicUserDto(player, stats);
+        }));
+
+        return playersWithStats;
     }
 }

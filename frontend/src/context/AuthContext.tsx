@@ -12,6 +12,20 @@ interface User {
     maxEnergy?: number;
     maxNerve?: number;
     maxHp?: number;
+    stats?: {
+        str: number;
+        tol: number;
+        int: number;
+        spd: number;
+    };
+    computed?: {
+        totalStr: number;
+        totalTol: number;
+        totalSpd: number;
+        totalInt: number;
+        bonuses: { str: number; def: number; spd: number };
+        equippedItems: string[];
+    };
 }
 
 interface AuthContextType {

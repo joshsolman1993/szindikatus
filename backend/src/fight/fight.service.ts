@@ -3,6 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { GameBalance } from '../config/game-balance.config';
+import { UsersService } from '../users/users.service';
+
+interface CombatStats {
+    totalStr: number;
+    totalTol: number;
+    totalSpd: number;
+    totalInt: number;
+    bonuses: { str: number; def: number; spd: number };
+    equippedItems: string[];
+}
 
 export interface FightResult {
     winner: boolean;
@@ -18,6 +28,7 @@ export class FightService {
     constructor(
         @InjectRepository(User)
         private usersRepository: Repository<User>,
+        private usersService: UsersService,
     ) { }
 
     // Validáció: Lehet-e támadni
@@ -46,9 +57,9 @@ export class FightService {
     }
 
     // Harc kimenetelének kiszámítása
-    calculateOutcome(attacker: User, defender: User): boolean {
-        const attackerScore = (attacker.stats.str + attacker.stats.spd) * (0.8 + Math.random() * 0.4);
-        const defenderScore = (defender.stats.tol + defender.stats.spd) * (0.8 + Math.random() * 0.4);
+    calculateOutcome(attackerStats: CombatStats, defenderStats: CombatStats): boolean {
+        const attackerScore = (attackerStats.totalStr + attackerStats.totalSpd) * (0.8 + Math.random() * 0.4);
+        const defenderScore = (defenderStats.totalTol + defenderStats.totalSpd) * (0.8 + Math.random() * 0.4);
 
         return attackerScore > defenderScore;
     }
@@ -72,8 +83,12 @@ export class FightService {
             // Bátorság levonása
             attacker.nerve -= GameBalance.FIGHT_NERVE_COST;
 
+            // Statisztikák lekérése (felszereléssel együtt)
+            const attackerStats = await this.usersService.calculateCombatStats(attackerId);
+            const defenderStats = await this.usersService.calculateCombatStats(defenderId);
+
             // Kimenetel kiszámítása
-            const attackerWins = this.calculateOutcome(attacker, defender);
+            const attackerWins = this.calculateOutcome(attackerStats, defenderStats);
 
             const logs: string[] = [];
             let moneyStolen = 0;
@@ -84,6 +99,9 @@ export class FightService {
             if (attackerWins) {
                 // GYŐZELEM
                 logs.push(`Te bevittél egy jobb horgot...`);
+                if (attackerStats.equippedItems.length > 0) {
+                    logs.push(`A(z) ${attackerStats.equippedItems.join(', ')} segítségével extra sebzést vittél be!`);
+                }
                 logs.push(`${defender.username} összeesett!`);
 
                 // Pénz rablás
@@ -107,6 +125,9 @@ export class FightService {
             } else {
                 // VERESÉG
                 logs.push(`${defender.username} túl erős volt...`);
+                if (defenderStats.equippedItems.length > 0) {
+                    logs.push(`Az ellenfél a(z) ${defenderStats.equippedItems.join(', ')} segítségével hárított!`);
+                }
                 logs.push(`Kaptál egy nagy pofont!`);
 
                 // XP az áldozat védelmében

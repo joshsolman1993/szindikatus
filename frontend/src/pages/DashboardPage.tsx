@@ -6,7 +6,7 @@ import { Button } from '../components/ui/Button';
 import { ToastContainer } from '../components/ui/Toast';
 import { useToast } from '../hooks/useToast';
 import { refillEnergy } from '../api/user';
-import { DollarSign, Zap, Heart, Shield, Sparkles } from 'lucide-react';
+import { DollarSign, Zap, Heart, Shield, Sparkles, Dumbbell, Target } from 'lucide-react';
 
 export const DashboardPage = () => {
     const { user, refreshProfile } = useAuth();
@@ -79,6 +79,38 @@ export const DashboardPage = () => {
                         value={`${user?.hp || 0} / ${user?.maxHp || 100}`}
                         icon={Heart}
                         color="text-success"
+                    />
+                </div>
+
+                {/* Combat Stats Grid */}
+                <h2 className="text-xl font-display font-bold text-white mt-2 mb-4">Harci Statisztikák</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <StatCard
+                        label="Erő"
+                        value={user?.stats?.str || 0}
+                        bonus={user?.computed?.bonuses.str}
+                        icon={Dumbbell}
+                        color="text-red-500"
+                    />
+                    <StatCard
+                        label="Állóképesség"
+                        value={user?.stats?.tol || 0}
+                        bonus={user?.computed?.bonuses.def}
+                        icon={Shield}
+                        color="text-green-500"
+                    />
+                    <StatCard
+                        label="Intelligencia"
+                        value={user?.stats?.int || 0}
+                        icon={Target}
+                        color="text-blue-500"
+                    />
+                    <StatCard
+                        label="Gyorsaság"
+                        value={user?.stats?.spd || 0}
+                        bonus={user?.computed?.bonuses.spd}
+                        icon={Zap}
+                        color="text-yellow-500"
                     />
                 </div>
 
