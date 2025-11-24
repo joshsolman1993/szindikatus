@@ -18,4 +18,7 @@ export const GameBalance = {
         int: 10, // Intelligencia
         spd: 10, // Sebesség
     },
+
+    // Edzőterem költségek
+    GYM_ENERGY_COST: 10, // Energia költség edzéshez
 };

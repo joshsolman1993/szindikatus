@@ -154,6 +154,13 @@ Cél: Hosszú távú játékélmény biztosítása.
 
 📝 Változásnapló (Changelog)
 
+[0.1.8] - 2025-11-24
+
+Feature: Konditerem (Gym) rendszer implementálva.
+Feature: Statisztika edzés (Erő, Állóképesség, Intelligencia, Gyorsaság).
+Technikai: Tranzakciós JSONB update, energia ellenőrzés.
+UI: Gym oldal 4 kártyával, Toast feedback, Navigation sidebar.
+
 [0.1.7] - 2025-11-24
 
 Feature:[x] 🟢 Dashboard Layout komponensek (Sidebar, Resource Bars).

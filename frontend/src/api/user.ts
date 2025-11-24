@@ -9,3 +9,8 @@ export const getUserProfile = async (): Promise<User> => {
 export const refillEnergy = async (): Promise<void> => {
     await apiClient.post('/users/refill-energy');
 };
+
+export const trainStat = async (stat: string): Promise<any> => {
+    const response = await apiClient.post('/users/train', { stat });
+    return response.data;
+};

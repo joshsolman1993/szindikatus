@@ -10,10 +10,10 @@ export interface User {
     maxNerve?: number;
     maxHp?: number;
     stats?: {
-        strength: number;
-        intelligence: number;
-        tolerance: number;
-        speed: number;
+        str: number;
+        tol: number;
+        int: number;
+        spd: number;
     };
 }
 

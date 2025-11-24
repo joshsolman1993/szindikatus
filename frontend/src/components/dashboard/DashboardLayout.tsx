@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Target, LogOut, Heart, Zap, Shield } from 'lucide-react';
+import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ResourceBar } from './ResourceBar';
 import { Button } from '../ui/Button';
@@ -15,6 +15,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     const navItems = [
         { path: '/dashboard', icon: Home, label: 'Főoldal' },
         { path: '/crimes', icon: Target, label: 'Bűntények' },
+        { path: '/gym', icon: Dumbbell, label: 'Konditerem' },
     ];
 
     return (

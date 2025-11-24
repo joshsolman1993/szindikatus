@@ -55,4 +55,44 @@ export class UsersService {
             hp: GameBalance.MAX_HP,
         });
     }
+
+    async train(userId: string, stat: string): Promise<User> {
+        const { GameBalance } = require('../config/game-balance.config');
+
+        // Validáció: Engedélyezett stat nevek
+        const validStats = ['str', 'tol', 'int', 'spd'];
+        if (!validStats.includes(stat)) {
+            throw new ConflictException(`Érvénytelen stat: ${stat}. Választható: ${validStats.join(', ')}`);
+        }
+
+        return await this.usersRepository.manager.transaction(async (manager) => {
+            const user = await manager.findOne(User, { where: { id: userId } });
+
+            if (!user) {
+                throw new ConflictException('Felhasználó nem található.');
+            }
+
+            // Ellenőrizzük az energiát
+            if (user.energy < GameBalance.GYM_ENERGY_COST) {
+                throw new ConflictException('Nincs elég energiád az edzéshez.');
+            }
+
+            // Energia levonása
+            user.energy -= GameBalance.GYM_ENERGY_COST;
+
+            // Statisztika növelése (egyszerű +1 vagy képlet alapján)
+            const currentStatValue = user.stats[stat];
+            const increase = Math.max(1, Math.floor(1 + (currentStatValue * 0.01)));
+
+            // JSONB update - csak a megadott kulcs frissítése
+            user.stats = {
+                ...user.stats,
+                [stat]: currentStatValue + increase,
+            };
+
+            // Mentés
+            await manager.save(user);
+            return user;
+        });
+    }
 }
