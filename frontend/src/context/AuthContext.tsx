@@ -9,6 +9,9 @@ interface User {
     energy: number;
     nerve: number;
     hp: number;
+    maxEnergy?: number;
+    maxNerve?: number;
+    maxHp?: number;
 }
 
 interface AuthContextType {

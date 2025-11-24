@@ -5,6 +5,7 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { CrimesPage } from './pages/CrimesPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/crimes" element={<CrimesPage />} />
           </Route>
 
           {/* Fallback */}
