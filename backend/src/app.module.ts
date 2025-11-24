@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CrimesModule } from './crimes/crimes.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '../.env', // A gyökérkönyvtárban lévő .env fájlt olvassa
+      envFilePath: '../.env',
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -24,7 +27,7 @@ import { CrimesModule } from './crimes/crimes.module';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [User],
-        synchronize: true, // FIGYELEM: Fejlesztéshez true, élesben FALSE legyen!
+        synchronize: true,
         autoLoadEntities: true,
       }),
       inject: [ConfigService],
@@ -32,6 +35,7 @@ import { CrimesModule } from './crimes/crimes.module';
     UsersModule,
     AuthModule,
     CrimesModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

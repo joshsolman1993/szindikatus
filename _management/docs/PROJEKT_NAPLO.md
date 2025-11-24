@@ -30,7 +30,7 @@ Cél: Egy játszható alapverzió, ahol regisztrálni lehet, van energiarendszer
 
 [x] 🟢 Játékos profil adatbázis séma (Cash, Energy, Stats)
 
-[ ] 🔴 Energia visszatöltődés logika (Cron job / Timestamp számítás)
+[x] 🟢 Energia visszatöltődés logika (Cron job / Timestamp számítás)
 
 [x] 🟢 "Bűntények" adatbázis tábla feltöltése (Seed data)
 
@@ -77,6 +77,12 @@ Cél: Hosszú távú játékélmény biztosítása.
 [ ] 🔴 Dinamikus Piac (Árfolyam változás logika)
 
 📝 Változásnapló (Changelog)
+
+[0.1.5] - 2025-11-24
+
+Feature: Energia és Bátorság visszatöltődés (Cron Job).
+Feature: Fejlesztői eszközök (Energia újratöltés API).
+Technikai: CommonModule és ScheduleModule integrálva.
 
 [0.1.4] - 2025-11-24
 

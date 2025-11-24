@@ -39,4 +39,20 @@ export class UsersService {
     async findByEmail(email: string): Promise<User | null> {
         return this.usersRepository.findOne({ where: { email } });
     }
+
+    async findById(id: string): Promise<User | null> {
+        return this.usersRepository.findOne({ where: { id } });
+    }
+
+    async refillEnergy(userId: string): Promise<void> {
+        // Fejlesztői eszköz: Maxra tölt mindent
+        // Importáljuk a GameBalance-t
+        const { GameBalance } = require('../config/game-balance.config');
+
+        await this.usersRepository.update(userId, {
+            energy: GameBalance.MAX_ENERGY,
+            nerve: GameBalance.MAX_NERVE,
+            hp: GameBalance.MAX_HP,
+        });
+    }
 }
