@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CrimesModule } from './crimes/crimes.module';
 import { CommonModule } from './common/common.module';
+import { FightModule } from './fight/fight.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CommonModule } from './common/common.module';
     AuthModule,
     CrimesModule,
     CommonModule,
+    FightModule,
   ],
   controllers: [AppController],
   providers: [AppService],

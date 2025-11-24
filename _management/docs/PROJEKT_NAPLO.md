@@ -154,6 +154,16 @@ Cél: Hosszú távú játékélmény biztosítása.
 
 📝 Változásnapló (Changelog)
 
+[0.2.0] - 2025-11-24
+
+Feature: PvP Harcrendszer (Combat System) implementálva.
+Feature: FightService - Validáció, Szimuláció, Végrehajtás (tranzakcióban).
+Feature: Pénz rablás (10%), XP jutalm
+
+ak, HP változások.
+UI: CombatResultModal - részletes győzelem/vereség visszajelzés.
+Technikai: FIGHT_NERVE_COST, damage/reward konstansok.
+
 [0.1.9] - 2025-11-24
 
 Feature: "Az Utca" (The Streets) - Játékos lista implementálva.
