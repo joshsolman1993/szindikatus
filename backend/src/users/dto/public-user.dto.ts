@@ -4,6 +4,8 @@ export class PublicUserDto {
     avatarUrl: string;
     totalStats: number; // Összes statisztika összege (erő becslés)
     clanTag?: string;
+    xp?: number;
+    cash?: string;
 
     constructor(user: any, computedStats?: any) {
         this.id = user.id;
@@ -21,5 +23,9 @@ export class PublicUserDto {
         if (user.clan) {
             this.clanTag = user.clan.tag;
         }
+
+        // XP és cash hozzáadása
+        this.xp = user.xp;
+        this.cash = user.cash;
     }
 }

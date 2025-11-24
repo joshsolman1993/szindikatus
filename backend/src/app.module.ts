@@ -15,6 +15,7 @@ import { MarketModule } from './market/market.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { ChatModule } from './chat/chat.module';
 import { ClansModule } from './clans/clans.module';
+import { LeaderboardModule } from './leaderboard/leaderboard.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ClansModule } from './clans/clans.module';
     InventoryModule,
     ChatModule,
     ClansModule,
+    LeaderboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

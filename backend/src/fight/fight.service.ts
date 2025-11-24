@@ -115,6 +115,7 @@ export class FightService {
 
                 // XP
                 xpGained = GameBalance.FIGHT_XP_REWARD;
+                attacker.xp += xpGained;
 
                 // HP változás
                 damageDealt = GameBalance.FIGHT_WIN_DEFENDER_DAMAGE;

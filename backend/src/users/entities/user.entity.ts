@@ -34,6 +34,9 @@ export class User {
     @Column({ type: 'int', default: GameBalance.INITIAL_HP })
     hp: number;
 
+    @Column({ type: 'int', default: 0 })
+    xp: number;
+
     @Column({ type: 'jsonb', default: GameBalance.INITIAL_STATS })
     stats: {
         str: number;

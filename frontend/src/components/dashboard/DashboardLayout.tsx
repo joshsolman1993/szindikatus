@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package } from 'lucide-react';
+import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package, Trophy } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ResourceBar } from './ResourceBar';
 import { Button } from '../ui/Button';
@@ -21,6 +21,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         { path: '/market', icon: ShoppingBag, label: 'Feketepiac' },
         { path: '/inventory', icon: Package, label: 'Leltár' },
         { path: '/clans', icon: Shield, label: 'Bandák' },
+        { path: '/leaderboard', icon: Trophy, label: 'Ranglista' },
     ];
 
     return (

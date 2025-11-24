@@ -152,9 +152,19 @@ Cél: Hosszú távú játékélmény biztosítása.
 
 [x] 🟢 Klán rendszer (Létrehozás, Meghívás)
 
-[ ] 🔴 Dinamikus Piac (Árfolyam változás logika)
+[x] 🟢 Dinamikus Piac (Árfolyam változás logika)
+
+[x] 🟢 Ranglista (Leaderboard) - Játékos és Klán rangsorok
 
 📝 Változásnapló (Changelog)
+
+[0.2.5] - 2025-11-24
+
+Feature: Ranglista (Leaderboard) rendszer.
+Feature: XP (Tapasztalati pont) hozzáadása User entitáshoz, XP jutalm azás harcokban.
+Feature: LeaderboardService - Top 50 játékos XP és cash alapján, Top 50 banda össz-XP alapján.
+Feature: Frontend LeaderboardPage - Fülek: Legerősebbek, Leggazdagabbak, Top Bandák.
+Feature: Kiemelés: Saját játékos/banda highlighting, Top 3 medal ikonok.
 
 [0.2.4] - 2025-11-24
 

@@ -114,4 +114,21 @@ export class ClansService {
         if (!clan) throw new NotFoundException('Banda nem található.');
         return clan;
     }
+
+    async getTopClans(): Promise<any[]> {
+        // Bandák rendezése a tagok össz XP-je alapján
+        const clans = await this.clansRepository.createQueryBuilder('clan')
+            .leftJoinAndSelect('clan.members', 'member')
+            .select('clan.id', 'id')
+            .addSelect('clan.name', 'name')
+            .addSelect('clan.tag', 'tag')
+            .addSelect('COUNT(member.id)', 'memberCount')
+            .addSelect('SUM(member.xp)', 'totalXp')
+            .groupBy('clan.id')
+            .orderBy('"totalXp"', 'DESC')
+            .take(50)
+            .getRawMany();
+
+        return clans;
+    }
 }

@@ -6,6 +6,8 @@ export interface PublicUser {
     avatarUrl: string;
     totalStats: number;
     clanTag?: string;
+    xp?: number;
+    cash?: string;
 }
 
 export const getPlayers = async (): Promise<PublicUser[]> => {
