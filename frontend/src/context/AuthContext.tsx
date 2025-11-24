@@ -26,6 +26,13 @@ interface User {
         bonuses: { str: number; def: number; spd: number };
         equippedItems: string[];
     };
+    clanId?: string;
+    clanRank?: 'LEADER' | 'MEMBER';
+    clan?: {
+        id: string;
+        name: string;
+        tag: string;
+    };
 }
 
 interface AuthContextType {

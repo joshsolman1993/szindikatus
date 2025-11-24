@@ -3,6 +3,7 @@ import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag,
 import { useAuth } from '../../context/AuthContext';
 import { ResourceBar } from './ResourceBar';
 import { Button } from '../ui/Button';
+import { ChatWidget } from '../layout/ChatWidget';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -19,6 +20,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         { path: '/streets', icon: Users, label: 'Az Utca' },
         { path: '/market', icon: ShoppingBag, label: 'Feketepiac' },
         { path: '/inventory', icon: Package, label: 'Leltár' },
+        { path: '/clans', icon: Shield, label: 'Bandák' },
     ];
 
     return (
@@ -75,8 +77,8 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                                     key={item.path}
                                     to={item.path}
                                     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive
-                                            ? 'bg-primary text-white'
-                                            : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                                        ? 'bg-primary text-white'
+                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                                         }`}
                                 >
                                     <item.icon className="w-5 h-5" />
@@ -94,6 +96,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                     </div>
                 </main>
             </div>
+            <ChatWidget />
         </div>
     );
 };

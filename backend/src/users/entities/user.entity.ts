@@ -1,5 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { GameBalance } from '../../config/game-balance.config';
+import { Clan } from '../../clans/entities/clan.entity';
+
+export enum ClanRank {
+    LEADER = 'LEADER',
+    MEMBER = 'MEMBER',
+}
 
 @Entity('users')
 export class User {
@@ -35,6 +41,20 @@ export class User {
         int: number;
         spd: number;
     };
+
+    @Column({ nullable: true })
+    clanId: string | null;
+
+    @Column({
+        type: 'enum',
+        enum: ClanRank,
+        nullable: true,
+    })
+    clanRank: ClanRank | null;
+
+    @ManyToOne(() => Clan, (clan) => clan.members)
+    @JoinColumn({ name: 'clanId' })
+    clan: Clan;
 
     @CreateDateColumn()
     createdAt: Date;

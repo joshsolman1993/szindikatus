@@ -13,6 +13,8 @@ import { FightModule } from './fight/fight.module';
 import { ItemsModule } from './items/items.module';
 import { MarketModule } from './market/market.module';
 import { InventoryModule } from './inventory/inventory.module';
+import { ChatModule } from './chat/chat.module';
+import { ClansModule } from './clans/clans.module';
 
 @Module({
   imports: [
@@ -44,6 +46,8 @@ import { InventoryModule } from './inventory/inventory.module';
     ItemsModule,
     MarketModule,
     InventoryModule,
+    ChatModule,
+    ClansModule,
   ],
   controllers: [AppController],
   providers: [AppService],

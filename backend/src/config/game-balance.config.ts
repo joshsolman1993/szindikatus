@@ -30,4 +30,7 @@ export const GameBalance = {
     FIGHT_WIN_DEFENDER_DAMAGE: 30, // HP veszteség vereség esetén
     FIGHT_LOSE_ATTACKER_DAMAGE: 20, // HP veszteség vereség esetén
     FIGHT_XP_REWARD: 20, // XP jutalom
+
+    // Klán rendszer
+    CLAN_CREATION_COST: 10000,
 };

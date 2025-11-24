@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { GameBalance } from '../config/game-balance.config';
 import { UsersService } from '../users/users.service';
+import { EventsService } from '../common/services/events.service';
 
 interface CombatStats {
     totalStr: number;
@@ -29,6 +30,7 @@ export class FightService {
         @InjectRepository(User)
         private usersRepository: Repository<User>,
         private usersService: UsersService,
+        private eventsService: EventsService,
     ) { }
 
     // Validáció: Lehet-e támadni
@@ -122,6 +124,14 @@ export class FightService {
                 attacker.hp = Math.max(0, attacker.hp - damageTaken);
 
                 logs.push(`Elloptál $${moneyStolen}-t és szereztél ${xpGained} XP-t!`);
+
+                // Broadcast big wins
+                if (moneyStolen > 1000) {
+                    this.eventsService.broadcastSystemEvent(
+                        `HÍR: ${attacker.username} brutálisan helybenhagyta ${defender.username}-t és elvett tőle $${moneyStolen}-t!`,
+                        'combat'
+                    );
+                }
             } else {
                 // VERESÉG
                 logs.push(`${defender.username} túl erős volt...`);

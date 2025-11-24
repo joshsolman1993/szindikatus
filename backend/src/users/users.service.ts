@@ -44,7 +44,7 @@ export class UsersService {
     }
 
     async findById(id: string): Promise<User | null> {
-        return this.usersRepository.findOne({ where: { id } });
+        return this.usersRepository.findOne({ where: { id }, relations: ['clan'] });
     }
 
     async findAllExcept(userId: string): Promise<User[]> {
@@ -54,6 +54,7 @@ export class UsersService {
             where: {
                 id: Not(userId),
             },
+            relations: ['clan'],
             order: {
                 updatedAt: 'DESC',
             },

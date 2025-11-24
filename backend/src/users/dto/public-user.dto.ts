@@ -3,6 +3,7 @@ export class PublicUserDto {
     username: string;
     avatarUrl: string;
     totalStats: number; // Összes statisztika összege (erő becslés)
+    clanTag?: string;
 
     constructor(user: any, computedStats?: any) {
         this.id = user.id;
@@ -15,6 +16,10 @@ export class PublicUserDto {
         } else {
             const stats = user.stats || { str: 0, tol: 0, int: 0, spd: 0 };
             this.totalStats = stats.str + stats.tol + stats.int + stats.spd;
+        }
+
+        if (user.clan) {
+            this.clanTag = user.clan.tag;
         }
     }
 }

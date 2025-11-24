@@ -26,7 +26,14 @@ const PlayerCard = ({ player, onAttack, isAttacking }: PlayerCardProps) => {
                     className="w-16 h-16 rounded-full border-2 border-gray-700"
                 />
                 <div className="flex-1">
-                    <h3 className="text-lg font-display font-bold text-white">{player.username}</h3>
+                    <div className="flex items-center gap-2">
+                        {player.clanTag && (
+                            <span className="text-xs font-bold bg-primary text-black px-1.5 py-0.5 rounded">
+                                [{player.clanTag}]
+                            </span>
+                        )}
+                        <h3 className="text-lg font-display font-bold text-white">{player.username}</h3>
+                    </div>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                         <span>Erő becslés:</span>
                         <span className="text-primary font-semibold">{player.totalStats}</span>

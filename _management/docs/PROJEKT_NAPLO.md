@@ -148,11 +148,29 @@ Cél: Hosszú távú játékélmény biztosítása.
 
 [ ] 🔴 Klán rendszer (Létrehozás, Meghívás)
 
-[ ] 🔴 Valós idejű Chat (Socket.io)
+[x] 🟢 Valós idejű Chat (Socket.io)
+
+[x] 🟢 Klán rendszer (Létrehozás, Meghívás)
 
 [ ] 🔴 Dinamikus Piac (Árfolyam változás logika)
 
 📝 Változásnapló (Changelog)
+
+[0.2.4] - 2025-11-24
+
+Feature: Klán rendszer (Clan System).
+Feature: ClansService - Létrehozás (pénzbe kerül), Csatlakozás, Kilépés.
+Feature: Backend entitások (Clan) és User bővítés (clanId, clanRank).
+Feature: Frontend ClansPage - Banda alapítás, lista, saját banda nézet.
+Feature: UI integráció - Banda tag megjelenítése a játékos listában.
+
+[0.2.3] - 2025-11-24
+
+Feature: Valós idejű Chat és Rendszerüzenetek (Live Feed).
+Feature: WebSocket Gateway (ChatGateway) JWT hitelesítéssel.
+Feature: EventsService - rendszerüzenetek broadcastolása (pl. nagy rablások).
+Feature: Frontend ChatWidget komponens (Chat és Hírek fülek).
+Feature: useSocket hook a kapcsolat kezelésére.
 
 [0.2.2] - 2025-11-24
 
