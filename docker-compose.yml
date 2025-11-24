@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: szindikatus_postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - szindikatus_network
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: szindikatus_redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - szindikatus_network
+    restart: always
+
+networks:
+  szindikatus_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
