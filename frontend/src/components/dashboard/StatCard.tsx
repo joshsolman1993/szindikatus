@@ -10,7 +10,7 @@ interface StatCardProps {
 
 export const StatCard = ({ label, value, bonus, icon: Icon, color = 'text-gray-400' }: StatCardProps) => {
     return (
-        <div className="bg-surface border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-colors">
+        <div className="glass-panel p-4">
             <div className="flex items-center justify-between">
                 <div>
                     <div className="text-sm text-gray-400 mb-1">{label}</div>

@@ -13,7 +13,7 @@ export const CrimeCard = ({ crime, userEnergy, onCommit, isLoading }: CrimeCardP
     const canAfford = userEnergy >= crime.energyCost;
 
     return (
-        <div className="bg-surface border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-all">
+        <div className="glass-panel p-4">
             <div className="flex flex-col h-full">
                 <div className="flex-1">
                     <h3 className="text-lg font-display font-bold text-white mb-2">{crime.name}</h3>

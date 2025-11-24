@@ -56,66 +56,82 @@ export const DashboardPage = () => {
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard
-                        label="Készpénz"
-                        value={`$${user?.cash || '0'}`}
-                        icon={DollarSign}
-                        color="text-success"
-                    />
-                    <StatCard
-                        label="Energia"
-                        value={`${user?.energy || 0} / ${user?.maxEnergy || 100}`}
-                        icon={Zap}
-                        color="text-secondary"
-                    />
-                    <StatCard
-                        label="Bátorság"
-                        value={`${user?.nerve || 0} / ${user?.maxNerve || 10}`}
-                        icon={Shield}
-                        color="text-primary"
-                    />
-                    <StatCard
-                        label="HP"
-                        value={`${user?.hp || 0} / ${user?.maxHp || 100}`}
-                        icon={Heart}
-                        color="text-success"
-                    />
+                    <div className="animate-fade-in delay-100">
+                        <StatCard
+                            label="Készpénz"
+                            value={`$${user?.cash || '0'}`}
+                            icon={DollarSign}
+                            color="text-success"
+                        />
+                    </div>
+                    <div className="animate-fade-in delay-200">
+                        <StatCard
+                            label="Energia"
+                            value={`${user?.energy || 0} / ${user?.maxEnergy || 100}`}
+                            icon={Zap}
+                            color="text-secondary"
+                        />
+                    </div>
+                    <div className="animate-fade-in delay-300">
+                        <StatCard
+                            label="Bátorság"
+                            value={`${user?.nerve || 0} / ${user?.maxNerve || 10}`}
+                            icon={Shield}
+                            color="text-primary"
+                        />
+                    </div>
+                    <div className="animate-fade-in delay-400">
+                        <StatCard
+                            label="HP"
+                            value={`${user?.hp || 0} / ${user?.maxHp || 100}`}
+                            icon={Heart}
+                            color="text-success"
+                        />
+                    </div>
                 </div>
 
                 {/* Combat Stats Grid */}
-                <h2 className="text-xl font-display font-bold text-white mt-2 mb-4">Harci Statisztikák</h2>
+                <h2 className="text-xl font-display font-bold text-white mt-2 mb-4 animate-fade-in delay-100">Harci Statisztikák</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard
-                        label="Erő"
-                        value={user?.stats?.str || 0}
-                        bonus={user?.computed?.bonuses.str}
-                        icon={Dumbbell}
-                        color="text-red-500"
-                    />
-                    <StatCard
-                        label="Állóképesség"
-                        value={user?.stats?.tol || 0}
-                        bonus={user?.computed?.bonuses.def}
-                        icon={Shield}
-                        color="text-green-500"
-                    />
-                    <StatCard
-                        label="Intelligencia"
-                        value={user?.stats?.int || 0}
-                        icon={Target}
-                        color="text-blue-500"
-                    />
-                    <StatCard
-                        label="Gyorsaság"
-                        value={user?.stats?.spd || 0}
-                        bonus={user?.computed?.bonuses.spd}
-                        icon={Zap}
-                        color="text-yellow-500"
-                    />
+                    <div className="animate-fade-in delay-200">
+                        <StatCard
+                            label="Erő"
+                            value={user?.stats?.str || 0}
+                            bonus={user?.computed?.bonuses.str}
+                            icon={Dumbbell}
+                            color="text-red-500"
+                        />
+                    </div>
+                    <div className="animate-fade-in delay-300">
+                        <StatCard
+                            label="Állóképesség"
+                            value={user?.stats?.tol || 0}
+                            bonus={user?.computed?.bonuses.def}
+                            icon={Shield}
+                            color="text-green-500"
+                        />
+                    </div>
+                    <div className="animate-fade-in delay-400">
+                        <StatCard
+                            label="Intelligencia"
+                            value={user?.stats?.int || 0}
+                            icon={Target}
+                            color="text-blue-500"
+                        />
+                    </div>
+                    <div className="animate-fade-in delay-500">
+                        <StatCard
+                            label="Gyorsaság"
+                            value={user?.stats?.spd || 0}
+                            bonus={user?.computed?.bonuses.spd}
+                            icon={Zap}
+                            color="text-yellow-500"
+                        />
+                    </div>
                 </div>
 
                 {/* Welcome Panel */}
-                <div className="bg-surface border border-gray-800 rounded-lg p-6">
+                <div className="glass-panel p-6 animate-fade-in delay-300">
                     <h2 className="text-xl font-display font-bold text-white mb-3">
                         <span className="text-primary">⚡</span> Kezdjük!
                     </h2>

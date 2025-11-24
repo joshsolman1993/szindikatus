@@ -1,21 +1,41 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
 @import "tailwindcss";
 
 @theme {
+  /* Semantic Colors - Cyberpunk/Gangster Theme */
   --color-primary: #dc2626;
   --color-secondary: #eab308;
   --color-success: #22c55e;
+
+  /* Dark Theme Palette */
+  --color-dark-900: #0f1115;
+  --color-dark-800: #1f2937;
+  --color-dark-700: #374151;
+
+  /* Aliases for consistency */
   --color-background: #0f1115;
   --color-surface: #1f2937;
 
-  --font-sans: 'Inter', sans-serif;
+  /* Font Families */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-tech: 'Orbitron', sans-serif;
   --font-display: 'Orbitron', sans-serif;
+
+  /* Animation Keyframes */
+  --animate-fade-in: fade-in 0.5s ease-out forwards;
+  --animate-slide-in-up: slide-in-up 0.6s ease-out forwards;
+  --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
 }
 
 @layer base {
   body {
-    background-color: var(--color-background);
-    color: white;
+    background-color: var(--color-dark-900);
+    color: #f3f4f6;
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -25,5 +45,147 @@
   h5,
   h6 {
     font-family: var(--font-display);
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+
+  /* Custom Button Classes */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium;
+    @apply bg-primary text-white border border-primary;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:scale-105 active:scale-95;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-dark-900;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 25px rgba(220, 38, 38, 0.6), 0 0 35px rgba(220, 38, 38, 0.4);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium;
+    @apply bg-transparent text-gray-300 border border-dark-700;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-dark-800 hover:text-white hover:border-gray-600;
+    @apply active:scale-95;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-600 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-900;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium;
+    @apply bg-transparent text-gray-400 border border-transparent;
+    @apply transition-all duration-200;
+    @apply hover:bg-dark-800 hover:text-white;
+    @apply active:scale-95;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  /* Neon Text Effect */
+  .neon-text {
+    color: var(--color-primary);
+    text-shadow:
+      0 0 7px rgba(220, 38, 38, 0.8),
+      0 0 10px rgba(220, 38, 38, 0.6),
+      0 0 21px rgba(220, 38, 38, 0.4),
+      0 0 42px rgba(220, 38, 38, 0.2);
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .neon-text-secondary {
+    color: var(--color-secondary);
+    text-shadow:
+      0 0 7px rgba(234, 179, 8, 0.8),
+      0 0 10px rgba(234, 179, 8, 0.6),
+      0 0 21px rgba(234, 179, 8, 0.4);
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  /* Card Styles */
+  .glass-panel {
+    @apply rounded-xl border border-dark-700 bg-dark-800/50 backdrop-blur-md;
+    @apply transition-all duration-300;
+  }
+
+  .glass-panel:hover {
+    @apply border-gray-600 bg-dark-800/70;
+  }
+
+  /* Animation Classes */
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-slide-in-up {
+    animation: slide-in-up 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  /* Stagger delays for sequential animations */
+  .delay-100 {
+    animation-delay: 0.1s;
+  }
+
+  .delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  .delay-400 {
+    animation-delay: 0.4s;
+  }
+
+  .delay-500 {
+    animation-delay: 0.5s;
+  }
+}
+
+/* Keyframe Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
   }
 }

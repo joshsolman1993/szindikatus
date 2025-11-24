@@ -142,34 +142,6 @@ Cél: A játékosok közötti konfliktus megteremtése.
 
 [ ] 🔴 Item Shop (Bolt) felület
 
-🏢 FÁZIS 3: Gazdaság és Közösség
-
-Cél: Hosszú távú játékélmény biztosítása.
-
-[ ] 🔴 Klán rendszer (Létrehozás, Meghívás)
-
-[x] 🟢 Valós idejű Chat (Socket.io)
-
-[x] 🟢 Klán rendszer (Létrehozás, Meghívás)
-
-[x] 🟢 Dinamikus Piac (Árfolyam változás logika)
-
-[x] 🟢 Ranglista (Leaderboard) - Játékos és Klán rangsorok
-
-📝 Változásnapló (Changelog)
-
-[0.2.5] - 2025-11-24
-
-Feature: Ranglista (Leaderboard) rendszer.
-Feature: XP (Tapasztalati pont) hozzáadása User entitáshoz, XP jutalm azás harcokban.
-Feature: LeaderboardService - Top 50 játékos XP és cash alapján, Top 50 banda össz-XP alapján.
-Feature: Frontend LeaderboardPage - Fülek: Legerősebbek, Leggazdagabbak, Top Bandák.
-Feature: Kiemelés: Saját játékos/banda highlighting, Top 3 medal ikonok.
-
-[0.2.4] - 2025-11-24
-
-Feature: Klán rendszer (Clan System).
-Feature: ClansService - Létrehozás (pénzbe kerül), Csatlakozás, Kilépés.
 Feature: Backend entitások (Clan) és User bővítés (clanId, clanRank).
 Feature: Frontend ClansPage - Banda alapítás, lista, saját banda nézet.
 Feature: UI integráció - Banda tag megjelenítése a játékos listában.

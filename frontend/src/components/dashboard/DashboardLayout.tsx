@@ -31,7 +31,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 <div className="max-w-7xl mx-auto px-4 py-3">
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-4">
-                            <h1 className="text-xl font-display font-bold text-primary">SZINDIKÁTUS</h1>
+                            <h1 className="text-xl font-display font-bold neon-text">SZINDIKÁTUS</h1>
                             <span className="text-sm text-gray-400">Üdv, {user?.username}!</span>
                         </div>
                         <Button variant="ghost" size="sm" onClick={logout}>
