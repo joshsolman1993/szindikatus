@@ -12,6 +12,7 @@ import { BlackMarketPage } from './pages/BlackMarketPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { ClansPage } from './pages/ClansPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
+import { ProfilePage } from './pages/ProfilePage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/inventory" element={<InventoryPage />} />
             <Route path="/clans" element={<ClansPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
 
           {/* Fallback */}
