@@ -153,7 +153,8 @@
 
   /* Stat Card Color Variants */
   .stat-card-strength {
-    @apply glass-panel;
+    @apply rounded-xl border bg-gray-900/60 backdrop-blur-md;
+    @apply transition-all duration-300;
     border-color: rgba(239, 68, 68, 0.2);
     box-shadow:
       0 0 20px rgba(220, 38, 38, 0.1),
@@ -161,6 +162,7 @@
   }
 
   .stat-card-strength:hover {
+    @apply bg-gray-900/70;
     border-color: rgba(239, 68, 68, 0.3);
     box-shadow:
       0 0 30px rgba(220, 38, 38, 0.2),
@@ -168,7 +170,8 @@
   }
 
   .stat-card-defense {
-    @apply glass-panel;
+    @apply rounded-xl border bg-gray-900/60 backdrop-blur-md;
+    @apply transition-all duration-300;
     border-color: rgba(16, 185, 129, 0.2);
     box-shadow:
       0 0 20px rgba(16, 185, 129, 0.1),
@@ -176,6 +179,7 @@
   }
 
   .stat-card-defense:hover {
+    @apply bg-gray-900/70;
     border-color: rgba(16, 185, 129, 0.3);
     box-shadow:
       0 0 30px rgba(16, 185, 129, 0.2),
@@ -183,7 +187,8 @@
   }
 
   .stat-card-speed {
-    @apply glass-panel;
+    @apply rounded-xl border bg-gray-900/60 backdrop-blur-md;
+    @apply transition-all duration-300;
     border-color: rgba(234, 179, 8, 0.2);
     box-shadow:
       0 0 20px rgba(234, 179, 8, 0.1),
@@ -191,6 +196,7 @@
   }
 
   .stat-card-speed:hover {
+    @apply bg-gray-900/70;
     border-color: rgba(234, 179, 8, 0.3);
     box-shadow:
       0 0 30px rgba(234, 179, 8, 0.2),
@@ -198,7 +204,8 @@
   }
 
   .stat-card-intelligence {
-    @apply glass-panel;
+    @apply rounded-xl border bg-gray-900/60 backdrop-blur-md;
+    @apply transition-all duration-300;
     border-color: rgba(168, 85, 247, 0.2);
     box-shadow:
       0 0 20px rgba(168, 85, 247, 0.1),
@@ -206,6 +213,7 @@
   }
 
   .stat-card-intelligence:hover {
+    @apply bg-gray-900/70;
     border-color: rgba(168, 85, 247, 0.3);
     box-shadow:
       0 0 30px rgba(168, 85, 247, 0.2),
