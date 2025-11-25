@@ -77,13 +77,20 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                                 <Link
                                     key={item.path}
                                     to={item.path}
-                                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive
-                                        ? 'bg-primary text-white'
-                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                                        }`}
+                                    className={`
+                                        flex items-center gap-3 px-4 py-3 rounded-full 
+                                        transition-all duration-300 relative overflow-hidden
+                                        ${isActive
+                                            ? 'bg-primary/20 text-white border-l-4 border-primary shadow-lg shadow-primary/30'
+                                            : 'text-gray-400 hover:bg-gray-800/50 hover:text-white hover:border-l-4 hover:border-primary/50'
+                                        }
+                                    `}
                                 >
-                                    <item.icon className="w-5 h-5" />
-                                    <span className="font-medium">{item.label}</span>
+                                    {isActive && (
+                                        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent" />
+                                    )}
+                                    <item.icon className="w-5 h-5 relative z-10" />
+                                    <span className="font-medium relative z-10">{item.label}</span>
                                 </Link>
                             );
                         })}
@@ -91,8 +98,16 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 p-6 overflow-auto">
-                    <div className="max-w-6xl mx-auto">
+                <main
+                    className="flex-1 p-6 overflow-auto relative"
+                    style={{
+                        backgroundImage: `linear-gradient(to bottom, rgba(15, 17, 21, 0.85), rgba(15, 17, 21, 0.95)), url('https://images.unsplash.com/photo-1605218427306-6354db69e563?q=80&w=2000&auto=format&fit=crop')`,
+                        backgroundSize: 'cover',
+                        backgroundAttachment: 'fixed',
+                        backgroundPosition: 'center'
+                    }}
+                >
+                    <div className="max-w-7xl mx-auto relative z-10">
                         {children}
                     </div>
                 </main>
