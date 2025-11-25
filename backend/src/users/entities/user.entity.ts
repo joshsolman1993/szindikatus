@@ -59,6 +59,14 @@ export class User {
     @JoinColumn({ name: 'clanId' })
     clan: Clan;
 
+    @Column({ type: 'text', nullable: true })
+    bio: string | null;
+
+    @Column({ type: 'jsonb', default: { soundEnabled: true } })
+    settings: {
+        soundEnabled: boolean;
+    };
+
     @CreateDateColumn()
     createdAt: Date;
 

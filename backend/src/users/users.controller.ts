@@ -1,8 +1,9 @@
-import { Controller, Get, Post, UseGuards, Request, Body } from '@nestjs/common';
+import { Controller, Get, Post, Patch, UseGuards, Request, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { GameBalance } from '../config/game-balance.config';
 import { PublicUserDto } from './dto/public-user.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('users')
 export class UsersController {
@@ -19,6 +20,17 @@ export class UsersController {
             maxNerve: GameBalance.MAX_NERVE,
             maxHp: GameBalance.MAX_HP,
             computed: combatStats,
+        };
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch('profile')
+    async updateProfile(@Request() req, @Body() updateProfileDto: UpdateProfileDto) {
+        const updatedUser = await this.usersService.updateProfile(req.user.userId, updateProfileDto);
+        return {
+            message: 'Profil sikeresen frissítve!',
+            bio: updatedUser.bio,
+            settings: updatedUser.settings,
         };
     }
 

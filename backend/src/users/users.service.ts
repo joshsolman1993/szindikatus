@@ -4,6 +4,7 @@ import { Repository, Not } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Inventory } from '../items/entities/inventory.entity';
 import { RegisterDto } from '../auth/dto/auth.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -72,6 +73,29 @@ export class UsersService {
             nerve: GameBalance.MAX_NERVE,
             hp: GameBalance.MAX_HP,
         });
+    }
+
+    async updateProfile(userId: string, updateProfileDto: UpdateProfileDto): Promise<User> {
+        const user = await this.usersRepository.findOne({ where: { id: userId } });
+
+        if (!user) {
+            throw new ConflictException('Felhasználó nem található.');
+        }
+
+        // Bio frissítése ha van
+        if (updateProfileDto.bio !== undefined) {
+            user.bio = updateProfileDto.bio;
+        }
+
+        // Settings frissítése ha van  
+        if (updateProfileDto.settings) {
+            user.settings = {
+                ...user.settings,
+                ...updateProfileDto.settings,
+            };
+        }
+
+        return await this.usersRepository.save(user);
     }
 
     async train(userId: string, stat: string): Promise<User> {
