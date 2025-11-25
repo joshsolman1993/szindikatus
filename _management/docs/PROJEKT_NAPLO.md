@@ -137,6 +137,74 @@ Cél: A játékosok közötti konfliktus megteremtése.
 [ ] 🔴 Harcrendszer motorjának megírása (Szimuláció)
 
 
+📝 Változásnapló (Changelog)
+
+[0.2.8] - 2025-11-25
+
+**Feature:** Dashboard Visual Overhaul - Cyberpunk HUD Layout.
+🎨 **Design:** Asszimetrikus 3-oszlopos grid layout (2/3 stats, 1/3 activity feed).
+🎨 **Design:** Hero szekció nagy avatárral, szint badge-dzsel és XP progress bar-ral.
+🎨 **Design:** Következő cél kártya (Lépj szintet!) sárga border-rel.
+🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
+🎨 **Stílus:** Háttérkép gradiens overlay-jel (cyberpunk város).
+🎨 **Stílus:** Glitch text-shadow effekt a főcímen.
+🎨 **Stílus:** border-l-4 vastagabb bal oldali keretek színkódolt kártyákon.
+✨ **Effekt:** Capsule alakú sidebar menüpontok neon bal border-rel.
+✨ **Effekt:** Aktív menüpont gradient overlay háttérrel.
+🔧 **Refactor:** Teljes DashboardPage újraírás cyberpunk esztétikával.
+🔧 **Refactor:** DashboardLayout main area háttérkép támogatással.
+
+[0.2.7] - 2025-11-25
+
+**Feature:** Glassmorphism, Gradiensek és Interaktív Hover Effektek.
+🎨 **Stílus:** Radiális gradient háttér (dark-900 → surface átmenet).
+🎨 **Stílus:** Custom scrollbar (vékony, sötétszürke, lekerekített).
+🎨 **Stílus:** Fejlettebb .glass-panel effekt (átlátszóbb, fehér border, backdrop-blur).
+🎨 **Stílus:** Színes stat kártya variánsok (strength/red, defense/green, speed/yellow, intelligence/purple).
+✨ **Effekt:** Hover lift animáció gombokon (translateY -2px).
+✨ **Effekt:** Erősebb shadow és neon glow gombok hover állapotában.
+🔧 **Refactor:** StatCard komponens variant prop támogatással.
+🔧 **Refactor:** DashboardPage - Harci statisztikák színes glow effektekkel.
+
+[0.2.6] - 2025-11-25
+
+**Feature:** Design System Polish - Egységes vizuális megjelenés és cyberpunk esztétika.
+🎨 **Stílus:** Google Fonts integráció (Inter, Orbitron betűtípusok).
+🎨 **Stílus:** Szemantikus színek definiálva (primary, secondary, success, dark-900/800/700).
+🎨 **Stílus:** Custom button osztályok (.btn-primary, .btn-secondary, .btn-ghost) neon glow effekttel.
+🎨 **Stílus:** .glass-panel utility osztály egységes kártyák számára.
+🎨 **Stílus:** .neon-text és .neon-text-secondary osztályok fénylő szövegekhez.
+✨ **Animáció:** fade-in és slide-in-up animációk implementálva.
+✨ **Animáció:** Staggered delays (késleltetett) animációk a Dashboard-on.
+🔧 **Refactor:** Button komponens egyszerűsítve design system osztályokkal.
+🔧 **Refactor:** StatCard, CrimeCard komponensek glass-panel osztállyal.
+🔧 **Refactor:** DashboardLayout - SZINDIKÁTUS címsor neon effekttel.
+🔧 **Refactor:** DashboardPage - StatCard-ok sima animált betöltéssel.
+
+[0.2.5] - 2025-11-24
+
+Feature: Ranglista (Leaderboard) rendszer.
+Feature: XP (Tapasztalati pont) hozzáadása User entitáshoz, XP jutalmazás harcokban.
+Feature: LeaderboardService - Top 50 játékos XP és cash alapján, Top 50 banda össz-XP alapján.
+Feature: Frontend LeaderboardPage - Fülek: Legerősebbek, Leggazdagabbak, Top Bandák.
+Feature: Kiemelés: Saját játékos/banda highlighting, Top 3 medal ikonok.
+
+[0.2.4] - 2025-11-24
+
+Feature: Klán rendszer (Clan System).
+Feature: ClansService - Létrehozás (pénzbe kerül), Csatlakozás, Kilépés.
+Feature: Backend entitások (Clan) és User bővítés (clanId, clanRank).
+Feature: Frontend ClansPage - Banda alapítás, lista, saját banda nézet.
+Feature: UI integráció - Banda tag megjelenítése a játékos listában.
+
+[0.2.3] - 2025-11-24
+
+Feature: Valós idejű Chat és Rendszerüzenetek (Live Feed).
+Feature: WebSocket Gateway (ChatGateway) JWT hitelesítéssel.
+Feature: EventsService - rendszerüzenetek broadcastolása (pl. nagy rablások).
+Feature: Frontend ChatWidget komponens (Chat és Hírek fülek).
+Feature: useSocket hook a kapcsolat kezelésére.
+
 [0.2.2] - 2025-11-24
 
 Feature: Felszerelés integráció (Equipment Integration).
