@@ -132,21 +132,6 @@ Cél: Egy játszható alapverzió, ahol regisztrálni lehet, van energiarendszer
 
 Cél: A játékosok közötti konfliktus megteremtése.
 🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
-🎨 **Stílus:** Háttérkép gradiens overlay-jel (cyberpunk város).
-🎨 **Stílus:** Glitch text-shadow effekt a főcímen.
-🎨 **Stílus:** border-l-4 vastagabb bal oldali keretek színkódolt kártyákon.
-✨ **Effekt:** Capsule alakú sidebar menüpontok neon bal border-rel.
-✨ **Effekt:** Aktív menüpont gradient overlay háttérrel.
-🔧 **Refactor:** Teljes DashboardPage újraírás cyberpunk esztétikával.
-🔧 **Refactor:** DashboardLayout main area háttérkép támogatással.
-
-[0.2.7] - 2025-11-25
-
-**Feature:** Glassmorphism, Gradiensek és Interaktív Hover Effektek.
-🎨 **Stílus:** Radiális gradient háttér (dark-900 → surface átmenet).
-🎨 **Stílus:** Custom scrollbar (vékony, sötétszürke, lekerekített).
-🎨 **Stílus:** Fejlettebb .glass-panel effekt (átlátszóbb, fehér border, backdrop-blur).
-🎨 **Stílus:** Színes stat kártya variánsok (strength/red, defense/green, speed/yellow, intelligence/purple).
 ✨ **Effekt:** Hover lift animáció gombokon (translateY -2px).
 ✨ **Effekt:** Erősebb shadow és neon glow gombok hover állapotában.
 🔧 **Refactor:** StatCard komponens variant prop támogatással.
