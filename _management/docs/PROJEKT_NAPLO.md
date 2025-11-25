@@ -131,20 +131,6 @@ Cél: Egy játszható alapverzió, ahol regisztrálni lehet, van energiarendszer
 ⚔️ FÁZIS 2: Interakció és Harc
 
 Cél: A játékosok közötti konfliktus megteremtése.
-
-[ ] 🔴 Más játékosok listázása / Kereső
-
-[ ] 🔴 Harcrendszer motorjának megírása (Szimuláció)
-
-
-📝 Változásnapló (Changelog)
-
-[0.2.8] - 2025-11-25
-
-**Feature:** Dashboard Visual Overhaul - Cyberpunk HUD Layout.
-🎨 **Design:** Asszimetrikus 3-oszlopos grid layout (2/3 stats, 1/3 activity feed).
-🎨 **Design:** Hero szekció nagy avatárral, szint badge-dzsel és XP progress bar-ral.
-🎨 **Design:** Következő cél kártya (Lépj szintet!) sárga border-rel.
 🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
 🎨 **Stílus:** Háttérkép gradiens overlay-jel (cyberpunk város).
 🎨 **Stílus:** Glitch text-shadow effekt a főcímen.
