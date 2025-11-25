@@ -1,4 +1,5 @@
 import { type LucideIcon } from 'lucide-react';
+import { clsx } from 'clsx';
 
 interface StatCardProps {
     label: string;
@@ -6,11 +7,27 @@ interface StatCardProps {
     bonus?: number;
     icon: LucideIcon;
     color?: string;
+    variant?: 'strength' | 'defense' | 'speed' | 'intelligence' | 'default';
 }
 
-export const StatCard = ({ label, value, bonus, icon: Icon, color = 'text-gray-400' }: StatCardProps) => {
+export const StatCard = ({
+    label,
+    value,
+    bonus,
+    icon: Icon,
+    color = 'text-gray-400',
+    variant = 'default'
+}: StatCardProps) => {
+    const variantClasses = {
+        strength: 'stat-card-strength',
+        defense: 'stat-card-defense',
+        speed: 'stat-card-speed',
+        intelligence: 'stat-card-intelligence',
+        default: 'glass-panel',
+    };
+
     return (
-        <div className="glass-panel p-4">
+        <div className={clsx('p-4', variantClasses[variant])}>
             <div className="flex items-center justify-between">
                 <div>
                     <div className="text-sm text-gray-400 mb-1">{label}</div>
@@ -21,7 +38,7 @@ export const StatCard = ({ label, value, bonus, icon: Icon, color = 'text-gray-4
                         ) : null}
                     </div>
                 </div>
-                <div className={`p-3 rounded-full bg-gray-900 ${color}`}>
+                <div className={`p-3 rounded-full bg-gray-900/80 backdrop-blur-sm ${color}`}>
                     <Icon className="w-6 h-6" />
                 </div>
             </div>

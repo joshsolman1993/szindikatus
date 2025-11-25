@@ -100,6 +100,7 @@ export const DashboardPage = () => {
                             bonus={user?.computed?.bonuses.str}
                             icon={Dumbbell}
                             color="text-red-500"
+                            variant="strength"
                         />
                     </div>
                     <div className="animate-fade-in delay-300">
@@ -109,6 +110,7 @@ export const DashboardPage = () => {
                             bonus={user?.computed?.bonuses.def}
                             icon={Shield}
                             color="text-green-500"
+                            variant="defense"
                         />
                     </div>
                     <div className="animate-fade-in delay-400">
@@ -117,6 +119,7 @@ export const DashboardPage = () => {
                             value={user?.stats?.int || 0}
                             icon={Target}
                             color="text-blue-500"
+                            variant="intelligence"
                         />
                     </div>
                     <div className="animate-fade-in delay-500">
@@ -126,6 +129,7 @@ export const DashboardPage = () => {
                             bonus={user?.computed?.bonuses.spd}
                             icon={Zap}
                             color="text-yellow-500"
+                            variant="speed"
                         />
                     </div>
                 </div>
