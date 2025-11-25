@@ -4,6 +4,7 @@ import { DashboardLayout } from '../components/dashboard/DashboardLayout';
 import { ToastContainer } from '../components/ui/Toast';
 import { CombatResultModal } from '../components/ui/CombatResultModal';
 import { useToast } from '../hooks/useToast';
+import { useGameSound } from '../hooks/useGameSound';
 import { getPlayers, type PublicUser } from '../api/users';
 import { attackPlayer, type FightResult } from '../api/fight';
 import { Search, Swords } from 'lucide-react';
@@ -57,6 +58,7 @@ const PlayerCard = ({ player, onAttack, isAttacking }: PlayerCardProps) => {
 export const TheStreetsPage = () => {
     const { refreshProfile } = useAuth();
     const { toasts, addToast, removeToast } = useToast();
+    const { playPunch, playError } = useGameSound();
     const [players, setPlayers] = useState<PublicUser[]>([]);
     const [filteredPlayers, setFilteredPlayers] = useState<PublicUser[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -94,6 +96,8 @@ export const TheStreetsPage = () => {
 
     const handleAttack = async (playerId: string) => {
         setAttackingPlayerId(playerId);
+        playPunch(); // Play punch sound immediately on attack
+
         try {
             const result = await attackPlayer(playerId);
             setCombatResult(result);
@@ -109,6 +113,7 @@ export const TheStreetsPage = () => {
                 addToast('Vereség! Jobban kell edzened...', 'error');
             }
         } catch (error: any) {
+            playError(); // Play error sound on failure
             const errorMessage = error.response?.data?.message || 'Hiba történt a támadás során.';
             addToast(errorMessage, 'error');
         } finally {

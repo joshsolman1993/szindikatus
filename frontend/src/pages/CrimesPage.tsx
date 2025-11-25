@@ -4,12 +4,14 @@ import { DashboardLayout } from '../components/dashboard/DashboardLayout';
 import { CrimeCard } from '../components/dashboard/CrimeCard';
 import { ToastContainer } from '../components/ui/Toast';
 import { useToast } from '../hooks/useToast';
+import { useGameSound } from '../hooks/useGameSound';
 import { getCrimes, commitCrime } from '../api/crimes';
 import type { Crime } from '../types';
 
 export const CrimesPage = () => {
     const { user, refreshProfile } = useAuth();
     const { toasts, addToast, removeToast } = useToast();
+    const { playCash, playError } = useGameSound();
     const [crimes, setCrimes] = useState<Crime[]>([]);
     const [loading, setLoading] = useState(true);
     const [committingCrime, setCommittingCrime] = useState<string | null>(null);
@@ -35,14 +37,17 @@ export const CrimesPage = () => {
             const result = await commitCrime(crimeId);
 
             if (result.success) {
+                playCash(); // Play cash sound on success
                 addToast(`Siker! Szereztél $${result.moneyGained}-t!`, 'success');
             } else {
+                playError(); // Play error sound on failure
                 addToast(result.message || 'A bűntény nem sikerült.', 'warning');
             }
 
             // Refresh user profile to update energy and cash
             await refreshProfile();
         } catch (error: any) {
+            playError(); // Play error sound on exception
             const errorMessage = error.response?.data?.message || 'Hiba történt a bűntény elkövetésekor.';
             addToast(errorMessage, 'error');
         } finally {
