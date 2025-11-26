@@ -3,13 +3,14 @@ import { useAuth } from '../context/AuthContext';
 import { DashboardLayout } from '../components/dashboard/DashboardLayout';
 import { StatCard } from '../components/dashboard/StatCard';
 import { Button } from '../components/ui/Button';
+import { Skeleton } from '../components/ui/Skeleton';
 import { ToastContainer } from '../components/ui/Toast';
 import { useToast } from '../hooks/useToast';
 import { refillEnergy } from '../api/user';
 import { DollarSign, Zap, Heart, Shield, Sparkles, Dumbbell, Target, TrendingUp, Activity } from 'lucide-react';
 
 export const DashboardPage = () => {
-    const { user, refreshProfile } = useAuth();
+    const { user, refreshProfile, isLoading } = useAuth();
     const { toasts, addToast, removeToast } = useToast();
     const [isRefilling, setIsRefilling] = useState(false);
 
@@ -41,6 +42,16 @@ export const DashboardPage = () => {
         { id: 2, type: 'crime', message: 'Bűntényt követtél el', time: '12 perce', color: 'text-yellow-400' },
         { id: 3, type: 'gym', message: 'Edzenél a konditeremben', time: '1 órája', color: 'text-blue-400' },
     ];
+
+    const StatCardSkeleton = () => (
+        <div className="bg-gray-900/50 border border-gray-800 p-4 rounded-xl">
+            <div className="flex items-center justify-between mb-2">
+                <Skeleton width="40%" height={16} />
+                <Skeleton width={24} height={24} className="rounded-full" />
+            </div>
+            <Skeleton width="60%" height={32} />
+        </div>
+    );
 
     return (
         <DashboardLayout>
@@ -130,38 +141,44 @@ export const DashboardPage = () => {
                                 </Button>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div className="animate-fade-in delay-100">
-                                    <StatCard
-                                        label="Készpénz"
-                                        value={`$${user?.cash || '0'}`}
-                                        icon={DollarSign}
-                                        color="text-success"
-                                    />
-                                </div>
-                                <div className="animate-fade-in delay-200">
-                                    <StatCard
-                                        label="Energia"
-                                        value={`${user?.energy || 0} / ${user?.maxEnergy || 100}`}
-                                        icon={Zap}
-                                        color="text-secondary"
-                                    />
-                                </div>
-                                <div className="animate-fade-in delay-300">
-                                    <StatCard
-                                        label="Bátorság"
-                                        value={`${user?.nerve || 0} / ${user?.maxNerve || 10}`}
-                                        icon={Shield}
-                                        color="text-primary"
-                                    />
-                                </div>
-                                <div className="animate-fade-in delay-400">
-                                    <StatCard
-                                        label="HP"
-                                        value={`${user?.hp || 0} / ${user?.maxHp || 100}`}
-                                        icon={Heart}
-                                        color="text-success"
-                                    />
-                                </div>
+                                {isLoading ? (
+                                    Array(4).fill(0).map((_, i) => <StatCardSkeleton key={i} />)
+                                ) : (
+                                    <>
+                                        <div className="animate-fade-in delay-100">
+                                            <StatCard
+                                                label="Készpénz"
+                                                value={`$${user?.cash || '0'}`}
+                                                icon={DollarSign}
+                                                color="text-success"
+                                            />
+                                        </div>
+                                        <div className="animate-fade-in delay-200">
+                                            <StatCard
+                                                label="Energia"
+                                                value={`${user?.energy || 0} / ${user?.maxEnergy || 100}`}
+                                                icon={Zap}
+                                                color="text-secondary"
+                                            />
+                                        </div>
+                                        <div className="animate-fade-in delay-300">
+                                            <StatCard
+                                                label="Bátorság"
+                                                value={`${user?.nerve || 0} / ${user?.maxNerve || 10}`}
+                                                icon={Shield}
+                                                color="text-primary"
+                                            />
+                                        </div>
+                                        <div className="animate-fade-in delay-400">
+                                            <StatCard
+                                                label="HP"
+                                                value={`${user?.hp || 0} / ${user?.maxHp || 100}`}
+                                                icon={Heart}
+                                                color="text-success"
+                                            />
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
 
@@ -171,45 +188,51 @@ export const DashboardPage = () => {
                                 Harci Statisztikák
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="animate-fade-in delay-200">
-                                    <StatCard
-                                        label="Erő"
-                                        value={user?.stats?.str || 0}
-                                        bonus={user?.computed?.bonuses.str}
-                                        icon={Dumbbell}
-                                        color="text-red-500"
-                                        variant="strength"
-                                    />
-                                </div>
-                                <div className="animate-fade-in delay-300">
-                                    <StatCard
-                                        label="Állóképesség"
-                                        value={user?.stats?.tol || 0}
-                                        bonus={user?.computed?.bonuses.def}
-                                        icon={Shield}
-                                        color="text-green-500"
-                                        variant="defense"
-                                    />
-                                </div>
-                                <div className="animate-fade-in delay-400">
-                                    <StatCard
-                                        label="Intelligencia"
-                                        value={user?.stats?.int || 0}
-                                        icon={Target}
-                                        color="text-blue-500"
-                                        variant="intelligence"
-                                    />
-                                </div>
-                                <div className="animate-fade-in delay-500">
-                                    <StatCard
-                                        label="Gyorsaság"
-                                        value={user?.stats?.spd || 0}
-                                        bonus={user?.computed?.bonuses.spd}
-                                        icon={Zap}
-                                        color="text-yellow-500"
-                                        variant="speed"
-                                    />
-                                </div>
+                                {isLoading ? (
+                                    Array(4).fill(0).map((_, i) => <StatCardSkeleton key={i} />)
+                                ) : (
+                                    <>
+                                        <div className="animate-fade-in delay-200">
+                                            <StatCard
+                                                label="Erő"
+                                                value={user?.stats?.str || 0}
+                                                bonus={user?.computed?.bonuses.str}
+                                                icon={Dumbbell}
+                                                color="text-red-500"
+                                                variant="strength"
+                                            />
+                                        </div>
+                                        <div className="animate-fade-in delay-300">
+                                            <StatCard
+                                                label="Állóképesség"
+                                                value={user?.stats?.tol || 0}
+                                                bonus={user?.computed?.bonuses.def}
+                                                icon={Shield}
+                                                color="text-green-500"
+                                                variant="defense"
+                                            />
+                                        </div>
+                                        <div className="animate-fade-in delay-400">
+                                            <StatCard
+                                                label="Intelligencia"
+                                                value={user?.stats?.int || 0}
+                                                icon={Target}
+                                                color="text-blue-500"
+                                                variant="intelligence"
+                                            />
+                                        </div>
+                                        <div className="animate-fade-in delay-500">
+                                            <StatCard
+                                                label="Gyorsaság"
+                                                value={user?.stats?.spd || 0}
+                                                bonus={user?.computed?.bonuses.spd}
+                                                icon={Zap}
+                                                color="text-yellow-500"
+                                                variant="speed"
+                                            />
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

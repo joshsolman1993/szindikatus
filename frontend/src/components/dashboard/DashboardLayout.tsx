@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package, Trophy, Dices, Building, Brain, Map, ClipboardList } from 'lucide-react';
+import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package, Trophy, Dices, Building, Brain, Map, ClipboardList, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ResourceBar } from './ResourceBar';
 import { Button } from '../ui/Button';
@@ -13,6 +14,7 @@ interface DashboardLayoutProps {
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     const { user, logout } = useAuth();
     const location = useLocation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const navItems = [
         { path: '/dashboard', icon: Home, label: 'Főoldal' },
@@ -37,6 +39,14 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 <div className="max-w-7xl mx-auto px-4 py-3">
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-4">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="md:hidden"
+                                onClick={() => setIsMobileMenuOpen(true)}
+                            >
+                                <Menu className="w-6 h-6" />
+                            </Button>
                             <h1 className="text-xl font-display font-bold neon-text">SZINDIKÁTUS</h1>
                             <span className="text-sm text-gray-400">Üdv, {user?.username}!</span>
                         </div>
@@ -102,6 +112,53 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                         })}
                     </nav>
                 </aside>
+
+                {/* Mobile Menu Overlay */}
+                {isMobileMenuOpen && (
+                    <div className="fixed inset-0 z-50 md:hidden">
+                        {/* Backdrop */}
+                        <div
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        />
+
+                        {/* Drawer */}
+                        <aside className="absolute left-0 top-0 bottom-0 w-[80%] bg-surface border-r border-gray-800 p-4 animate-slide-in-left glass-panel">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-xl font-display font-bold neon-text">MENÜ</h2>
+                                <Button variant="ghost" size="sm" onClick={() => setIsMobileMenuOpen(false)}>
+                                    <X className="w-5 h-5" />
+                                </Button>
+                            </div>
+                            <nav className="space-y-2">
+                                {navItems.map((item) => {
+                                    const isActive = location.pathname === item.path;
+                                    return (
+                                        <Link
+                                            key={item.path}
+                                            to={item.path}
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className={`
+                                                flex items-center gap-3 px-4 py-3 rounded-full 
+                                                transition-all duration-300 relative overflow-hidden
+                                                ${isActive
+                                                    ? 'bg-primary/20 text-white border-l-4 border-primary shadow-lg shadow-primary/30'
+                                                    : 'text-gray-400 hover:bg-gray-800/50 hover:text-white hover:border-l-4 hover:border-primary/50'
+                                                }
+                                            `}
+                                        >
+                                            {isActive && (
+                                                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent" />
+                                            )}
+                                            <item.icon className="w-5 h-5 relative z-10" />
+                                            <span className="font-medium relative z-10">{item.label}</span>
+                                        </Link>
+                                    );
+                                })}
+                            </nav>
+                        </aside>
+                    </div>
+                )}
 
                 {/* Main Content */}
                 <main

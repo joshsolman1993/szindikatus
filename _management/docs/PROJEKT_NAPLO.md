@@ -134,6 +134,14 @@ Cél: A játékosok közötti konfliktus megteremtése.
 🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
 Technikai: UserProperty kapcsolótábla, 24 órás bevétel limit (cap).
 
+[0.2.8] - 2025-11-26
+
+Feature: Mobil Navigáció (Hamburger Menü) javítása.
+Feature: Skeleton Loading állapotok bevezetése (Dashboard, Crimes, The Streets).
+UI: DashboardLayout - Mobil menü backdrop-al, drawer animációval.
+UI: Skeleton komponens létrehozása.
+UI: StatCardSkeleton, CrimeCardSkeleton, PlayerCardSkeleton implementálása.
+
 [0.2.7] - 2025-11-25
 
 Feature: Kaszinó (Casino) modul implementálva.

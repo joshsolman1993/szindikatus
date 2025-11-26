@@ -10,6 +10,7 @@ import { attackPlayer, type FightResult } from '../api/fight';
 import { Search, Swords } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
+import { Skeleton } from '../components/ui/Skeleton';
 
 interface PlayerCardProps {
     player: PublicUser;
@@ -156,8 +157,19 @@ export const TheStreetsPage = () => {
                 </div>
 
                 {loading ? (
-                    <div className="text-center py-12">
-                        <div className="text-gray-400">Betöltés...</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Array(6).fill(0).map((_, i) => (
+                            <div key={i} className="bg-surface border border-gray-800 rounded-lg p-4 h-[180px] animate-pulse flex flex-col justify-between">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <Skeleton width={64} height={64} className="rounded-full" />
+                                    <div className="flex-1 space-y-2">
+                                        <Skeleton width="60%" height={24} />
+                                        <Skeleton width="40%" height={16} />
+                                    </div>
+                                </div>
+                                <Skeleton width="100%" height={40} />
+                            </div>
+                        ))}
                     </div>
                 ) : filteredPlayers.length === 0 ? (
                     <div className="text-center py-12 bg-surface border border-gray-800 rounded-lg">

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { DashboardLayout } from '../components/dashboard/DashboardLayout';
 import { CrimeCard } from '../components/dashboard/CrimeCard';
+import { Skeleton } from '../components/ui/Skeleton';
 import { ToastContainer } from '../components/ui/Toast';
 import { useToast } from '../hooks/useToast';
 import { useGameSound } from '../hooks/useGameSound';
@@ -66,8 +67,19 @@ export const CrimesPage = () => {
                 </div>
 
                 {loading ? (
-                    <div className="text-center py-12">
-                        <div className="text-gray-400">Betöltés...</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Array(6).fill(0).map((_, i) => (
+                            <div key={i} className="bg-gray-900/50 border border-gray-800 p-4 rounded-xl h-[200px] animate-pulse flex flex-col justify-between">
+                                <div>
+                                    <Skeleton width="50%" height={24} className="mb-4" />
+                                    <div className="space-y-2">
+                                        <Skeleton width="100%" height={16} />
+                                        <Skeleton width="80%" height={16} />
+                                    </div>
+                                </div>
+                                <Skeleton width="100%" height={40} />
+                            </div>
+                        ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
