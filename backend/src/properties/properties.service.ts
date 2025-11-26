@@ -76,7 +76,7 @@ export class PropertiesService implements OnModuleInit {
 
     async buyProperty(userId: string, propertyId: number) {
         return this.dataSource.manager.transaction(async (entityManager) => {
-            const user = await entityManager.findOne(User, { where: { id: userId } });
+            const user = await entityManager.findOne(User, { where: { id: userId }, lock: { mode: 'pessimistic_write' } });
             const property = await entityManager.findOne(Property, { where: { id: propertyId } });
 
             if (!user || !property) {
@@ -148,7 +148,7 @@ export class PropertiesService implements OnModuleInit {
             }
 
             if (totalIncome > 0) {
-                const user = await entityManager.findOne(User, { where: { id: userId } });
+                const user = await entityManager.findOne(User, { where: { id: userId }, lock: { mode: 'pessimistic_write' } });
                 if (user) {
                     const currentCash = BigInt(user.cash);
                     user.cash = (currentCash + BigInt(totalIncome)).toString();

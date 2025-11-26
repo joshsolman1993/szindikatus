@@ -96,7 +96,7 @@ export class CrimesService implements OnModuleInit {
         // Tranzakció indítása
         return this.dataSource.manager.transaction(async (entityManager) => {
             // User és Crime lekérése a tranzakción belül (lockolás opció lehetne, de most egyszerűen)
-            const user = await entityManager.findOne(User, { where: { id: userId } });
+            const user = await entityManager.findOne(User, { where: { id: userId }, lock: { mode: 'pessimistic_write' } });
             const crime = await entityManager.findOne(Crime, { where: { id: crimeId } });
 
             if (!user) throw new NotFoundException('Felhasználó nem található');

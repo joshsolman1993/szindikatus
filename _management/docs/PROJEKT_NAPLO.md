@@ -134,6 +134,12 @@ Cél: A játékosok közötti konfliktus megteremtése.
 🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
 Technikai: UserProperty kapcsolótábla, 24 órás bevétel limit (cap).
 
+[0.2.9] - 2025-11-26
+
+Technikai: Race Condition javítások (Pessimistic Locking).
+Technikai: MarketService, CrimesService, FightService, UsersService, PropertiesService tranzakciók védelme.
+Technikai: Deadlock elkerülés a FightService-ben ID alapú rendezéssel.
+
 [0.2.8] - 2025-11-26
 
 Feature: Mobil Navigáció (Hamburger Menü) javítása.

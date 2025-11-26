@@ -52,7 +52,7 @@ export class MarketService implements OnModuleInit {
     // Vásárlás
     async buyItem(userId: string, itemId: string): Promise<{ message: string; remainingCash: string }> {
         return await this.usersRepository.manager.transaction(async (manager) => {
-            const user = await manager.findOne(User, { where: { id: userId } });
+            const user = await manager.findOne(User, { where: { id: userId }, lock: { mode: 'pessimistic_write' } });
             const item = await manager.findOne(Item, { where: { id: itemId } });
 
             if (!user || !item) {

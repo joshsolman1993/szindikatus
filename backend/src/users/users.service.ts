@@ -108,7 +108,7 @@ export class UsersService {
         }
 
         return await this.usersRepository.manager.transaction(async (manager) => {
-            const user = await manager.findOne(User, { where: { id: userId } });
+            const user = await manager.findOne(User, { where: { id: userId }, lock: { mode: 'pessimistic_write' } });
 
             if (!user) {
                 throw new ConflictException('Felhasználó nem található.');

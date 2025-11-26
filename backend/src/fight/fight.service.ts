@@ -84,8 +84,14 @@ export class FightService {
     // Harc végrehajtása (tranzakcióban)
     async executeFight(attackerId: string, defenderId: string): Promise<FightResult> {
         return await this.usersRepository.manager.transaction(async (manager) => {
-            const attacker = await manager.findOne(User, { where: { id: attackerId } });
-            const defender = await manager.findOne(User, { where: { id: defenderId } });
+            // Deadlock prevention: Lock users in ID order
+            const [firstId, secondId] = [attackerId, defenderId].sort();
+
+            const firstUser = await manager.findOne(User, { where: { id: firstId }, lock: { mode: 'pessimistic_write' } });
+            const secondUser = await manager.findOne(User, { where: { id: secondId }, lock: { mode: 'pessimistic_write' } });
+
+            const attacker = attackerId === firstId ? firstUser : secondUser;
+            const defender = defenderId === firstId ? firstUser : secondUser;
 
             if (!attacker || !defender) {
                 throw new ConflictException('Felhasználó nem található.');
