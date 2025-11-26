@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Index } from 'typeorm';
 import { GameBalance } from '../../config/game-balance.config';
 import { Clan } from '../../clans/entities/clan.entity';
 
@@ -12,6 +12,7 @@ export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Index()
     @Column({ unique: true })
     username: string;
 
@@ -22,6 +23,7 @@ export class User {
     password_hash: string;
 
     // BigInt-et stringként kezeljük JS oldalon a pontosság miatt
+    @Index()
     @Column({ type: 'bigint', default: GameBalance.INITIAL_CASH })
     cash: string;
 
@@ -34,6 +36,7 @@ export class User {
     @Column({ type: 'int', default: GameBalance.INITIAL_HP })
     hp: number;
 
+    @Index()
     @Column({ type: 'int', default: 0 })
     xp: number;
 
@@ -54,6 +57,7 @@ export class User {
         spd: number;
     };
 
+    @Index()
     @Column({ nullable: true })
     clanId: string | null;
 

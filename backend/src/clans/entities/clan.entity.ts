@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, OneToOne, JoinColumn, Index } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { District } from '../../territories/entities/district.entity';
 
@@ -16,6 +16,7 @@ export class Clan {
     @Column({ nullable: true })
     description: string;
 
+    @Index()
     @Column()
     leaderId: string;
 

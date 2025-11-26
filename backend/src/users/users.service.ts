@@ -182,23 +182,34 @@ export class UsersService {
     }
 
     async getTopPlayers(): Promise<User[]> {
-        return this.usersRepository.find({
-            order: {
-                xp: 'DESC',
-                createdAt: 'ASC',
-            },
-            take: 50,
-            relations: ['clan'],
-        });
+        return this.usersRepository.createQueryBuilder('user')
+            .leftJoinAndSelect('user.clan', 'clan')
+            .select([
+                'user.id',
+                'user.username',
+                'user.xp',
+                'user.stats', // Needed for totalStats calculation in PublicUserDto
+                'user.createdAt',
+                'clan.tag',
+                'clan.id'
+            ])
+            .orderBy('user.xp', 'DESC')
+            .addOrderBy('user.createdAt', 'ASC')
+            .take(50)
+            .getMany();
     }
 
     async getRichestPlayers(): Promise<User[]> {
-        // Mivel a cash string (bigint), a TypeORM alap rendezése működhet, 
-        // de ha nem, akkor QueryBuilder kellene CAST-tal. 
-        // Egyszerűség kedvéért most bízunk a string rendezésben (ha azonos hosszúságúak) 
-        // vagy inkább QueryBuilder-t használunk a biztonság kedvéért.
         return this.usersRepository.createQueryBuilder('user')
             .leftJoinAndSelect('user.clan', 'clan')
+            .select([
+                'user.id',
+                'user.username',
+                'user.cash',
+                'user.stats', // Needed for totalStats calculation in PublicUserDto
+                'clan.tag',
+                'clan.id'
+            ])
             .orderBy('CAST(user.cash AS BIGINT)', 'DESC')
             .take(50)
             .getMany();

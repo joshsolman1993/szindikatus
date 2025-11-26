@@ -12,6 +12,7 @@ export class LeaderboardController {
 
     @Get('players')
     async getTopPlayers() {
+        // TODO: Implement Redis caching (TTL: 60s) to reduce DB load
         const players = await this.usersService.getTopPlayers();
         // Mivel a getTopPlayers sima User[]-t ad vissza, konvertáljuk PublicUserDto-ra
         // Itt most nem számolunk felszerelést (egyszerűsítés), vagy ha kell, akkor calculateCombatStats hívás kellene.

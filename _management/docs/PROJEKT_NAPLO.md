@@ -134,6 +134,12 @@ Cél: A játékosok közötti konfliktus megteremtése.
 🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
 Technikai: UserProperty kapcsolótábla, 24 órás bevétel limit (cap).
 
+[0.3.0] - 2025-11-26
+
+Performance: Adatbázis indexek hozzáadva (User: xp, cash, username, clanId; Clan: leaderId).
+Performance: Query optimalizálás (UsersService) - csak a szükséges mezők lekérése.
+Technikai: Redis Cache előkészület (TODO) a ranglistákhoz.
+
 [0.2.9] - 2025-11-26
 
 Technikai: Race Condition javítások (Pessimistic Locking).
