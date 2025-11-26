@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSocket } from '../../hooks/useSocket';
 import { useAuth } from '../../context/AuthContext';
-import { MessageSquare, Activity, Send, Minimize2, Maximize2, X } from 'lucide-react';
+import { MessageSquare, Send, Minimize2 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 

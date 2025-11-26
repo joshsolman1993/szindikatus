@@ -141,7 +141,7 @@ export class MissionsService implements OnModuleInit {
                 if (amount >= um.mission.requirementValue) {
                     um.progress = um.mission.requirementValue;
                     um.isCompleted = true;
-                    this.eventsService.emitToAll('notification', { userId, message: `Küldetés teljesítve: ${um.mission.title}` });
+                    this.eventsService.broadcastToUser(userId, 'notification', { message: `Küldetés teljesítve: ${um.mission.title}` });
                 }
             } else {
                 // Accumulate progress
@@ -149,7 +149,7 @@ export class MissionsService implements OnModuleInit {
                 if (um.progress >= um.mission.requirementValue) {
                     um.progress = um.mission.requirementValue;
                     um.isCompleted = true;
-                    this.eventsService.emitToAll('notification', { userId, message: `Küldetés teljesítve: ${um.mission.title}` });
+                    this.eventsService.broadcastToUser(userId, 'notification', { message: `Küldetés teljesítve: ${um.mission.title}` });
                 }
             }
             await this.userMissionsRepository.save(um);
@@ -168,6 +168,7 @@ export class MissionsService implements OnModuleInit {
             if (userMission.isClaimed) throw new BadRequestException('Reward already claimed');
 
             const user = await entityManager.findOne(User, { where: { id: userId } });
+            if (!user) throw new BadRequestException('User not found');
 
             // Grant rewards
             const currentCash = BigInt(user.cash);

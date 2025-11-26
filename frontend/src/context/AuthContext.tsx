@@ -37,6 +37,7 @@ interface User {
     level?: number;
     talentPoints?: number;
     learnedTalents?: string[];
+    createdAt?: string;
 }
 
 interface AuthContextType {

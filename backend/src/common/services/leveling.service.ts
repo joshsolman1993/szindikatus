@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../users/entities/user.entity';
 import { GameBalance } from '../../config/game-balance.config';
-import { EventsService } from './events.service';
+import { EventsService } from '../../events/events.service';
 import { MissionsService } from '../../missions/missions.service';
 import { MissionRequirementType } from '../../missions/entities/mission.entity';
 

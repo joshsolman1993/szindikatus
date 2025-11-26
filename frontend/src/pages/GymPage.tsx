@@ -37,7 +37,7 @@ export const GymPage = () => {
         setTrainingState({ ...trainingState, [statKey]: true });
 
         try {
-            const result = await trainStat(statKey);
+            await trainStat(statKey);
             await refreshProfile();
 
             const statName = STATS.find(s => s.key === statKey)?.label || statKey;

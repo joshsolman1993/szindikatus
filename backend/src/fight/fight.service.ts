@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { GameBalance } from '../config/game-balance.config';
 import { UsersService } from '../users/users.service';
-import { EventsService } from '../common/services/events.service';
+import { EventsService } from '../events/events.service';
 import { LevelingService } from '../common/services/leveling.service';
 import { TalentId } from '../talents/talents.constants';
 import { MissionsService } from '../missions/missions.service';

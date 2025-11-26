@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { DashboardLayout } from '../components/dashboard/DashboardLayout';
 import { Button } from '../components/ui/Button';
 import { useToast } from '../hooks/useToast';
-import { getMissions, claimMissionReward, UserMission } from '../api/missions';
+import { getMissions, claimMissionReward, type UserMission } from '../api/missions';
 import { useAuth } from '../context/AuthContext';
 import { ClipboardList, CheckCircle, Lock, Trophy, Star, DollarSign } from 'lucide-react';
 
 export const MissionsPage = () => {
-    const { refreshUser } = useAuth();
+    const { refreshProfile } = useAuth();
     const { addToast } = useToast();
     const [missions, setMissions] = useState<UserMission[]>([]);
     const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export const MissionsPage = () => {
             }));
 
             // Refresh user stats (cash, xp)
-            refreshUser();
+            refreshProfile();
         } catch (error: any) {
             addToast(error.response?.data?.message || 'Hiba történt a jutalom felvételekor.', 'error');
         } finally {

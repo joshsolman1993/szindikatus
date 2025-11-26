@@ -155,96 +155,100 @@ export const PropertiesPage = () => {
                 </div>
 
                 {/* Content */}
-                <AnimatePresence mode="wait">
-                    {activeTab === 'market' ? (
-                        <motion.div
-                            key="market"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                        >
-                            {properties.map((property) => (
-                                <div key={property.id} className="glass-panel overflow-hidden flex flex-col h-full group">
-                                    <div className="h-48 overflow-hidden relative">
-                                        <img
-                                            src={property.imageUrl}
-                                            alt={property.name}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                                        <div className="absolute bottom-4 left-4">
-                                            <h3 className="text-xl font-bold text-white">{property.name}</h3>
+                {isLoading ? (
+                    <div className="text-center py-12 text-gray-400">Betöltés...</div>
+                ) : (
+                    <AnimatePresence mode="wait">
+                        {activeTab === 'market' ? (
+                            <motion.div
+                                key="market"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                            >
+                                {properties.map((property) => (
+                                    <div key={property.id} className="glass-panel overflow-hidden flex flex-col h-full group">
+                                        <div className="h-48 overflow-hidden relative">
+                                            <img
+                                                src={property.imageUrl}
+                                                alt={property.name}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                                            <div className="absolute bottom-4 left-4">
+                                                <h3 className="text-xl font-bold text-white">{property.name}</h3>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="p-6 flex-1 flex flex-col">
-                                        <p className="text-gray-400 text-sm mb-4 flex-1">{property.description}</p>
+                                        <div className="p-6 flex-1 flex flex-col">
+                                            <p className="text-gray-400 text-sm mb-4 flex-1">{property.description}</p>
 
-                                        <div className="grid grid-cols-2 gap-4 mb-6">
-                                            <div className="bg-gray-900/50 p-2 rounded border border-gray-800">
-                                                <p className="text-xs text-gray-500">Ár</p>
-                                                <p className="text-lg font-bold text-red-400">${property.cost.toLocaleString()}</p>
+                                            <div className="grid grid-cols-2 gap-4 mb-6">
+                                                <div className="bg-gray-900/50 p-2 rounded border border-gray-800">
+                                                    <p className="text-xs text-gray-500">Ár</p>
+                                                    <p className="text-lg font-bold text-red-400">${property.cost.toLocaleString()}</p>
+                                                </div>
+                                                <div className="bg-gray-900/50 p-2 rounded border border-gray-800">
+                                                    <p className="text-xs text-gray-500">Bevétel / óra</p>
+                                                    <p className="text-lg font-bold text-green-400">${property.incomePerHour.toLocaleString()}</p>
+                                                </div>
                                             </div>
-                                            <div className="bg-gray-900/50 p-2 rounded border border-gray-800">
-                                                <p className="text-xs text-gray-500">Bevétel / óra</p>
-                                                <p className="text-lg font-bold text-green-400">${property.incomePerHour.toLocaleString()}</p>
-                                            </div>
-                                        </div>
 
-                                        <Button
-                                            variant={isOwned(property.id) ? 'outline' : 'primary'}
-                                            onClick={() => handleBuy(property.id)}
-                                            disabled={!!(isOwned(property.id) || (user && parseInt(user.cash) < property.cost))}
-                                            className="w-full"
-                                        >
-                                            {isOwned(property.id) ? 'MÁR A TIÉD' : 'MEGVESZEM'}
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="my"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="grid grid-cols-1 gap-4"
-                        >
-                            {myProperties.length === 0 ? (
-                                <div className="text-center py-12 text-gray-500">
-                                    <Building className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                                    <p>Még nincsenek ingatlanjaid. Irány a piac!</p>
-                                </div>
-                            ) : (
-                                myProperties.map((up) => (
-                                    <div key={up.id} className="glass-panel p-4 flex items-center gap-6">
-                                        <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0">
-                                            <img src={up.property.imageUrl} alt={up.property.name} className="w-full h-full object-cover" />
+                                            <Button
+                                                variant={isOwned(property.id) ? 'outline' : 'primary'}
+                                                onClick={() => handleBuy(property.id)}
+                                                disabled={!!(isOwned(property.id) || (user && parseInt(user.cash) < property.cost))}
+                                                className="w-full"
+                                            >
+                                                {isOwned(property.id) ? 'MÁR A TIÉD' : 'MEGVESZEM'}
+                                            </Button>
                                         </div>
-                                        <div className="flex-1">
-                                            <h3 className="text-xl font-bold text-white mb-1">{up.property.name}</h3>
-                                            <div className="flex items-center gap-4 text-sm text-gray-400">
-                                                <span className="flex items-center gap-1">
-                                                    <TrendingUp className="w-4 h-4 text-green-500" />
-                                                    ${up.property.incomePerHour}/óra
-                                                </span>
-                                                <span className="flex items-center gap-1">
-                                                    <Clock className="w-4 h-4 text-blue-500" />
-                                                    Utolsó begyűjtés: {new Date(up.lastCollectedAt).toLocaleTimeString()}
-                                                </span>
+                                    </div>
+                                ))}
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="my"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                className="grid grid-cols-1 gap-4"
+                            >
+                                {myProperties.length === 0 ? (
+                                    <div className="text-center py-12 text-gray-500">
+                                        <Building className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                                        <p>Még nincsenek ingatlanjaid. Irány a piac!</p>
+                                    </div>
+                                ) : (
+                                    myProperties.map((up) => (
+                                        <div key={up.id} className="glass-panel p-4 flex items-center gap-6">
+                                            <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0">
+                                                <img src={up.property.imageUrl} alt={up.property.name} className="w-full h-full object-cover" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="text-xl font-bold text-white mb-1">{up.property.name}</h3>
+                                                <div className="flex items-center gap-4 text-sm text-gray-400">
+                                                    <span className="flex items-center gap-1">
+                                                        <TrendingUp className="w-4 h-4 text-green-500" />
+                                                        ${up.property.incomePerHour}/óra
+                                                    </span>
+                                                    <span className="flex items-center gap-1">
+                                                        <Clock className="w-4 h-4 text-blue-500" />
+                                                        Utolsó begyűjtés: {new Date(up.lastCollectedAt).toLocaleTimeString()}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-xs text-gray-500">Szint</p>
+                                                <p className="text-2xl font-bold text-white">{up.level}</p>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <p className="text-xs text-gray-500">Szint</p>
-                                            <p className="text-2xl font-bold text-white">{up.level}</p>
-                                        </div>
-                                    </div>
-                                ))
-                            )}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                                    ))
+                                )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                )}
             </div>
         </DashboardLayout>
     );
