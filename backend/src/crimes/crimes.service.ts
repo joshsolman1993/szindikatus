@@ -3,6 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import { Crime } from './entities/crime.entity';
 import { User } from '../users/entities/user.entity';
+import { District } from '../territories/entities/district.entity';
+import { Clan } from '../clans/entities/clan.entity';
+import { LevelingService } from '../common/services/leveling.service';
+import { TalentId } from '../talents/talents.constants';
+import { MissionsService } from '../missions/missions.service';
+import { MissionRequirementType } from '../missions/entities/mission.entity';
 
 @Injectable()
 export class CrimesService implements OnModuleInit {
@@ -13,7 +19,13 @@ export class CrimesService implements OnModuleInit {
         private crimesRepository: Repository<Crime>,
         @InjectRepository(User)
         private usersRepository: Repository<User>,
+        @InjectRepository(District)
+        private districtsRepository: Repository<District>,
+        @InjectRepository(Clan)
+        private clansRepository: Repository<Clan>,
         private dataSource: DataSource,
+        private readonly levelingService: LevelingService,
+        private readonly missionsService: MissionsService,
     ) { }
 
     async onModuleInit() {
@@ -117,7 +129,12 @@ export class CrimesService implements OnModuleInit {
 
             if (isSuccess) {
                 // Jutalom
-                const moneyReward = Math.floor(Math.random() * (crime.maxMoney - crime.minMoney + 1)) + crime.minMoney;
+                let moneyReward = Math.floor(Math.random() * (crime.maxMoney - crime.minMoney + 1)) + crime.minMoney;
+
+                // Talent Bonus: Street Wisdom (+5% Money)
+                if (user.learnedTalents && user.learnedTalents.includes(TalentId.STREET_WISDOM)) {
+                    moneyReward = Math.floor(moneyReward * 1.05);
+                }
 
                 // BigInt kezelés: stringként tároljuk, de számoláshoz konvertáljuk, majd vissza
                 const currentCash = BigInt(user.cash);
@@ -126,15 +143,46 @@ export class CrimesService implements OnModuleInit {
 
                 user.stats.int += 0.1; // Kis stat növekedés
 
-                // XP (egyelőre nincs külön XP mező a Userben, de a GDD szerint kéne. 
-                // Most csak logoljuk vagy hozzáadjuk egy stat-hoz, vagy feltételezzük, hogy van XP mező, de nincs.
-                // A GDD 3. fejezetben nem volt explicit XP mező a User Entity felsorolásban (csak cash, hp, energy, nerve, stats), 
-                // de a szöveg említi. A User entity-t nem módosítom most, csak a pénzt adom oda.
+                user.xp += crime.xpReward;
+                this.levelingService.checkLevelUp(user);
 
                 result.success = true;
                 result.gainedMoney = moneyReward;
-                result.gainedXp = crime.xpReward; // Csak visszaküldjük
+                result.gainedXp = crime.xpReward;
                 result.message = `Sikeres bűntény! Szereztél $${moneyReward}-t.`;
+
+                // Track Mission Progress
+                this.missionsService.trackProgress(userId, MissionRequirementType.CRIME, 1);
+
+                // --- Territory Tax Logic ---
+                // Determine district: use crime.districtId or random
+                let districtId = crime.districtId;
+                if (!districtId) {
+                    // Random district 1-6
+                    districtId = Math.floor(Math.random() * 6) + 1;
+                }
+
+                const district = await entityManager.findOne(District, {
+                    where: { id: districtId },
+                    relations: ['ownerClan'],
+                });
+
+                if (district && district.ownerClan) {
+                    const taxAmount = Math.floor(moneyReward * district.taxRate);
+                    if (taxAmount > 0) {
+                        // Add to clan bank
+                        const clan = await entityManager.findOne(Clan, { where: { id: district.ownerClan.id } });
+                        if (clan) {
+                            const currentBank = BigInt(clan.bank);
+                            const newBank = currentBank + BigInt(taxAmount);
+                            clan.bank = newBank.toString();
+                            await entityManager.save(clan);
+                            // Optional: Log or notify?
+                        }
+                    }
+                }
+                // ---------------------------
+
             } else {
                 // Bukás
                 // Esetleg HP levonás vagy börtön (később)

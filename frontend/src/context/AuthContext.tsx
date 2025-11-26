@@ -33,6 +33,10 @@ interface User {
         name: string;
         tag: string;
     };
+    xp?: number;
+    level?: number;
+    talentPoints?: number;
+    learnedTalents?: string[];
 }
 
 interface AuthContextType {

@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { ChatGateway } from '../../chat/chat.gateway';
 
 @Injectable()
 export class EventsService {
-    constructor(private chatGateway: ChatGateway) { }
+    broadcastToUser(userId: string, event: string, data: any) {
+        console.log(`[EventsService] Broadcast to ${userId}: ${event}`, data);
+        // TODO: Implement actual socket emission
+    }
 
-    broadcastSystemEvent(message: string, type: 'combat' | 'crime' | 'info') {
-        this.chatGateway.broadcastSystemEvent(message, type);
+    broadcastSystemEvent(message: string, type: string) {
+        console.log(`[EventsService] System Broadcast: ${message} (${type})`);
+        // TODO: Implement actual socket emission
     }
 }

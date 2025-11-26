@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { District } from '../../territories/entities/district.entity';
 
 @Entity('clans')
 export class Clan {
@@ -24,6 +25,12 @@ export class Clan {
 
     @OneToMany(() => User, (user) => user.clan)
     members: User[];
+
+    @OneToMany(() => District, (district) => district.ownerClan)
+    districts: District[];
+
+    @Column({ type: 'bigint', default: 0 })
+    bank: string;
 
     @CreateDateColumn()
     createdAt: Date;

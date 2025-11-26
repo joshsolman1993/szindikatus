@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package, Trophy } from 'lucide-react';
+import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package, Trophy, Dices, Building, Brain, Map, ClipboardList } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ResourceBar } from './ResourceBar';
 import { Button } from '../ui/Button';
@@ -7,6 +7,7 @@ import { ChatWidget } from '../layout/ChatWidget';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
+    title?: string;
 }
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
@@ -21,7 +22,12 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         { path: '/market', icon: ShoppingBag, label: 'Feketepiac' },
         { path: '/inventory', icon: Package, label: 'Leltár' },
         { path: '/clans', icon: Shield, label: 'Bandák' },
+        { path: '/map', icon: Map, label: 'Térkép' },
+        { path: '/missions', icon: ClipboardList, label: 'Küldetések' },
         { path: '/leaderboard', icon: Trophy, label: 'Ranglista' },
+        { path: '/casino', icon: Dices, label: 'Kaszinó' },
+        { path: '/properties', icon: Building, label: 'Ingatlanok' },
+        { path: '/talents', icon: Brain, label: 'Tehetségek' },
     ];
 
     return (
@@ -116,3 +122,5 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
     );
 };
+
+export default DashboardLayout;

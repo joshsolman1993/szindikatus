@@ -144,6 +144,7 @@ export class UsersService {
         totalInt: number;
         bonuses: { str: number; def: number; spd: number };
         equippedItems: string[];
+        learnedTalents: string[];
     }> {
         const user = await this.usersRepository.findOne({ where: { id: userId } });
         if (!user) throw new ConflictException('User not found');
@@ -176,6 +177,7 @@ export class UsersService {
                 spd: bonusSpd,
             },
             equippedItems: equippedItemNames,
+            learnedTalents: user.learnedTalents || [],
         };
     }
 

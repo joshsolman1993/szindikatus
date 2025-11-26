@@ -5,6 +5,10 @@ import { User } from '../users/entities/user.entity';
 import { GameBalance } from '../config/game-balance.config';
 import { UsersService } from '../users/users.service';
 import { EventsService } from '../common/services/events.service';
+import { LevelingService } from '../common/services/leveling.service';
+import { TalentId } from '../talents/talents.constants';
+import { MissionsService } from '../missions/missions.service';
+import { MissionRequirementType } from '../missions/entities/mission.entity';
 
 interface CombatStats {
     totalStr: number;
@@ -13,6 +17,7 @@ interface CombatStats {
     totalInt: number;
     bonuses: { str: number; def: number; spd: number };
     equippedItems: string[];
+    learnedTalents: string[];
 }
 
 export interface FightResult {
@@ -31,6 +36,8 @@ export class FightService {
         private usersRepository: Repository<User>,
         private usersService: UsersService,
         private eventsService: EventsService,
+        private readonly levelingService: LevelingService,
+        private readonly missionsService: MissionsService,
     ) { }
 
     // Validáció: Lehet-e támadni
@@ -60,8 +67,16 @@ export class FightService {
 
     // Harc kimenetelének kiszámítása
     calculateOutcome(attackerStats: CombatStats, defenderStats: CombatStats): boolean {
-        const attackerScore = (attackerStats.totalStr + attackerStats.totalSpd) * (0.8 + Math.random() * 0.4);
-        const defenderScore = (defenderStats.totalTol + defenderStats.totalSpd) * (0.8 + Math.random() * 0.4);
+        let attackerScore = (attackerStats.totalStr + attackerStats.totalSpd) * (0.8 + Math.random() * 0.4);
+        let defenderScore = (defenderStats.totalTol + defenderStats.totalSpd) * (0.8 + Math.random() * 0.4);
+
+        // Talent Bonuses
+        if (attackerStats.learnedTalents && attackerStats.learnedTalents.includes(TalentId.SHARPSHOOTER)) {
+            attackerScore *= 1.10;
+        }
+        if (defenderStats.learnedTalents && defenderStats.learnedTalents.includes(TalentId.IRON_SKIN)) {
+            defenderScore *= 1.05;
+        }
 
         return attackerScore > defenderScore;
     }
@@ -116,6 +131,7 @@ export class FightService {
                 // XP
                 xpGained = GameBalance.FIGHT_XP_REWARD;
                 attacker.xp += xpGained;
+                this.levelingService.checkLevelUp(attacker);
 
                 // HP változás
                 damageDealt = GameBalance.FIGHT_WIN_DEFENDER_DAMAGE;
@@ -133,6 +149,9 @@ export class FightService {
                         'combat'
                     );
                 }
+
+                // Track Mission Progress
+                this.missionsService.trackProgress(attackerId, MissionRequirementType.FIGHT_WIN, 1);
             } else {
                 // VERESÉG
                 logs.push(`${defender.username} túl erős volt...`);

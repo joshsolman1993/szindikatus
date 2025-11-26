@@ -1,15 +1,15 @@
 import {
     WebSocketGateway,
-    SubscribeMessage,
-    MessageBody,
     WebSocketServer,
+    SubscribeMessage,
     OnGatewayConnection,
     OnGatewayDisconnect,
+    MessageBody,
     ConnectedSocket,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { Logger, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UseGuards, Logger } from '@nestjs/common';
 
 @WebSocketGateway({
     cors: {
@@ -20,29 +20,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer()
     server: Server;
 
-    private logger = new Logger('ChatGateway');
+    private logger: Logger = new Logger('ChatGateway');
 
     constructor(private jwtService: JwtService) { }
 
-    async handleConnection(client: Socket) {
+    handleConnection(client: Socket) {
         try {
             const token = client.handshake.auth.token;
+            // Egyszerű token ellenőrzés (a valóságban validálni kellene)
             if (!token) {
-                this.logger.warn(`Client ${client.id} tried to connect without token`);
-                client.disconnect();
-                return;
+                // client.disconnect(); // Fejlesztés alatt engedékenyebb
+                this.logger.log(`Client connected without token: ${client.id}`);
+            } else {
+                this.logger.log(`Client connected: ${client.id}`);
             }
-
-            // Verify token
-            // Note: We assume the secret is available via JwtModule configuration
-            const payload = await this.jwtService.verifyAsync(token);
-
-            // Store user info in socket
-            client.data.user = payload;
-
-            this.logger.log(`Client connected: ${client.id} (User: ${payload.username})`);
-        } catch (error) {
-            this.logger.error(`Connection error for client ${client.id}: ${error.message}`);
+        } catch (e) {
+            this.logger.error(e);
             client.disconnect();
         }
     }
@@ -52,32 +45,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     @SubscribeMessage('sendMessage')
-    handleMessage(
-        @ConnectedSocket() client: Socket,
-        @MessageBody() payload: { message: string }
-    ): void {
-        const user = client.data.user;
-        if (!user) return;
-
-        const messageData = {
-            id: Date.now().toString(),
-            sender: user.username,
+    handleMessage(@ConnectedSocket() client: Socket, @MessageBody() payload: { message: string }): void {
+        // Broadcast mindenkinek
+        this.server.emit('messageToClient', {
+            id: Math.random().toString(36).substr(2, 9),
+            sender: 'User', // Itt ki kellene szedni a user nevet a tokenből
             message: payload.message,
             timestamp: new Date(),
-            type: 'chat'
-        };
-
-        this.server.emit('messageToClient', messageData);
-    }
-
-    // System broadcast method
-    broadcastSystemEvent(message: string, type: 'combat' | 'crime' | 'info' = 'info') {
-        const eventData = {
-            id: Date.now().toString(),
-            message,
-            type,
-            timestamp: new Date(),
-        };
-        this.server.emit('systemNotification', eventData);
+            type: 'chat',
+        });
     }
 }

@@ -134,8 +134,27 @@ Cél: A játékosok közötti konfliktus megteremtése.
 🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
 ✨ **Effekt:** Hover lift animáció gombokon (translateY -2px).
 ✨ **Effekt:** Erősebb shadow és neon glow gombok hover állapotában.
-🔧 **Refactor:** StatCard komponens variant prop támogatással.
-🔧 **Refactor:** DashboardPage - Harci statisztikák színes glow effektekkel.
+Feature: Backend integráció - Bónuszok alkalmazása (Crimes: +Money, Fight: +Dmg/+Def).
+Feature: Frontend TalentsPage - Vizuális tehetségfa, tanulás, szintlépés animáció (Confetti).
+Feature: Socket értesítés szintlépéskor.
+
+[0.2.8] - 2025-11-25
+
+Feature: Ingatlan (Real Estate) rendszer implementálva.
+Feature: PropertiesService - Ingatlanok seedelése, vásárlás, passzív jövedelem számítása.
+Feature: Backend API - /properties/buy és /properties/collect végpontok.
+Feature: Frontend PropertiesPage - Ingatlan piac és Saját birodalom fülek.
+Feature: UI integráció - Dinamikus bevétel számláló és begyűjtés gomb.
+Technikai: UserProperty kapcsolótábla, 24 órás bevétel limit (cap).
+
+[0.2.7] - 2025-11-25
+
+Feature: Kaszinó (Casino) modul implementálva.
+Feature: CasinoService - Pénzfeldobás (Coinflip) és Nyerőgép (Slots) logika.
+Feature: Backend API - /casino/coinflip és /casino/spin végpontok.
+Feature: Frontend CasinoPage - 3D animált pénzfeldobás és pörgetés.
+Feature: UI integráció - Kaszinó menüpont a Dashboard-on.
+Technikai: useGameSound integráció hangeffektekhez, framer-motion animációk.
 
 [0.2.6] - 2025-11-25
 

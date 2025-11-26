@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { District } from '../../territories/entities/district.entity';
 
 @Entity('crimes')
 export class Crime {
@@ -25,4 +26,11 @@ export class Crime {
 
     @Column({ type: 'int' })
     xpReward: number;
+
+    @Column({ nullable: true })
+    districtId: number;
+
+    @ManyToOne(() => District, { nullable: true })
+    @JoinColumn({ name: 'districtId' })
+    district: District;
 }

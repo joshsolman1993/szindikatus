@@ -16,43 +16,55 @@ import { InventoryModule } from './inventory/inventory.module';
 import { ChatModule } from './chat/chat.module';
 import { ClansModule } from './clans/clans.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
+import { CasinoModule } from './casino/casino.module';
+import { PropertiesModule } from './properties/properties.module';
+import { TalentsModule } from './talents/talents.module';
+import { EventsModule } from './events/events.module';
+import { TerritoriesModule } from './territories/territories.module';
+import { MissionsModule } from './missions/missions.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '../.env',
-      isGlobal: true,
-    }),
-    ScheduleModule.forRoot(),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
-        entities: [User],
-        synchronize: true,
-        autoLoadEntities: true,
-      }),
-      inject: [ConfigService],
-    }),
-    UsersModule,
-    AuthModule,
-    CrimesModule,
-    CommonModule,
-    FightModule,
-    ItemsModule,
-    MarketModule,
-    InventoryModule,
-    ChatModule,
-    ClansModule,
-    LeaderboardModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        ConfigModule.forRoot({
+            envFilePath: '../.env',
+            isGlobal: true,
+        }),
+        ScheduleModule.forRoot(),
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+                type: 'postgres',
+                host: configService.get<string>('DB_HOST'),
+                port: configService.get<number>('DB_PORT'),
+                username: configService.get<string>('DB_USERNAME'),
+                password: configService.get<string>('DB_PASSWORD'),
+                database: configService.get<string>('DB_DATABASE'),
+                entities: [User],
+                synchronize: true,
+                autoLoadEntities: true,
+            }),
+            inject: [ConfigService],
+        }),
+        UsersModule,
+        AuthModule,
+        CrimesModule,
+        CommonModule,
+        FightModule,
+        ItemsModule,
+        MarketModule,
+        InventoryModule,
+        ChatModule,
+        ClansModule,
+        LeaderboardModule,
+        CasinoModule,
+        PropertiesModule,
+        TalentsModule,
+        EventsModule,
+        TerritoriesModule,
+        MissionsModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule { }
 

@@ -13,6 +13,11 @@ import { InventoryPage } from './pages/InventoryPage';
 import { ClansPage } from './pages/ClansPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { CasinoPage } from './pages/CasinoPage';
+import { PropertiesPage } from './pages/PropertiesPage';
+import TalentsPage from './pages/TalentsPage';
+import { CityMapPage } from './pages/CityMap';
+import { MissionsPage } from './pages/MissionsPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -36,6 +41,11 @@ function App() {
             <Route path="/clans" element={<ClansPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/casino" element={<CasinoPage />} />
+            <Route path="/properties" element={<PropertiesPage />} />
+            <Route path="/talents" element={<TalentsPage />} />
+            <Route path="/map" element={<CityMapPage />} />
+            <Route path="/missions" element={<MissionsPage />} />
           </Route>
 
           {/* Fallback */}
