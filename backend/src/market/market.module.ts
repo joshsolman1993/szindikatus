@@ -2,12 +2,17 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MarketService } from './market.service';
 import { MarketController } from './market.controller';
+import { MarketListing } from './entities/market-listing.entity';
 import { Item } from '../items/entities/item.entity';
 import { Inventory } from '../items/entities/inventory.entity';
 import { User } from '../users/entities/user.entity';
+import { EventsModule } from '../events/events.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Item, Inventory, User])],
+    imports: [
+        TypeOrmModule.forFeature([MarketListing, Item, Inventory, User]),
+        EventsModule,
+    ],
     providers: [MarketService],
     controllers: [MarketController],
     exports: [MarketService],

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package, Trophy, Dices, Building, Brain, Map, ClipboardList, Menu, X } from 'lucide-react';
+import { Home, Target, LogOut, Heart, Zap, Shield, Dumbbell, Users, ShoppingBag, Package, Trophy, Dices, Building, Brain, Map, ClipboardList, Menu, X, Store } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ResourceBar } from './ResourceBar';
 import { Button } from '../ui/Button';
@@ -23,6 +23,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         { path: '/streets', icon: Users, label: 'Az Utca' },
         { path: '/market', icon: ShoppingBag, label: 'Feketepiac' },
         { path: '/inventory', icon: Package, label: 'Leltár' },
+        { path: '/player-market', icon: Store, label: 'Játékos Piac' },
         { path: '/clans', icon: Shield, label: 'Bandák' },
         { path: '/map', icon: Map, label: 'Térkép' },
         { path: '/missions', icon: ClipboardList, label: 'Küldetések' },

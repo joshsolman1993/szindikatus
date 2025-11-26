@@ -16,6 +16,9 @@ export class Inventory {
     @Column({ type: 'boolean', default: false })
     isEquipped: boolean;
 
+    @Column({ type: 'boolean', default: false })
+    isListed: boolean;
+
     @ManyToOne(() => User)
     @JoinColumn({ name: 'userId' })
     user: User;

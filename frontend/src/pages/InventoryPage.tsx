@@ -2,27 +2,37 @@ import { useState, useEffect } from 'react';
 import { DashboardLayout } from '../components/dashboard/DashboardLayout';
 import { ToastContainer } from '../components/ui/Toast';
 import { useToast } from '../hooks/useToast';
-import { getUserInventory, equipItem, type InventoryItem } from '../api/market';
-import { Package, Check, X } from 'lucide-react';
+import { getUserInventory, equipItem, createListing, type InventoryItem } from '../api/market';
+import { Package, Check, X, Tag } from 'lucide-react';
 import { Button } from '../components/ui/Button';
+import { SellItemModal } from '../components/ui/SellItemModal';
 
 interface InventoryCardProps {
     inventoryItem: InventoryItem;
     onEquip: (inventoryId: string) => void;
+    onSell: (inventoryId: string, itemName: string) => void;
     isEquipping: boolean;
 }
 
-const InventoryCard = ({ inventoryItem, onEquip, isEquipping }: InventoryCardProps) => {
+const InventoryCard = ({ inventoryItem, onEquip, onSell, isEquipping }: InventoryCardProps) => {
     const isEquipped = inventoryItem.isEquipped;
+    const isListed = (inventoryItem as any).isListed || false; // Check if item is listed
     const item = inventoryItem.item;
 
     return (
-        <div className={`bg-surface border-2 rounded-lg p-4 transition-all ${isEquipped ? 'border-success' : 'border-gray-800 hover:border-gray-700'
+        <div className={`bg-surface border-2 rounded-lg p-4 transition-all ${isEquipped ? 'border-success' : isListed ? 'border-accent' : 'border-gray-800 hover:border-gray-700'
             }`}>
             {isEquipped && (
                 <div className="flex items-center gap-2 text-success text-sm font-semibold mb-2">
                     <Check className="w-4 h-4" />
                     Felszerelve
+                </div>
+            )}
+
+            {isListed && (
+                <div className="flex items-center gap-2 text-accent text-sm font-semibold mb-2">
+                    <Tag className="w-4 h-4" />
+                    Piacon
                 </div>
             )}
 
@@ -54,24 +64,38 @@ const InventoryCard = ({ inventoryItem, onEquip, isEquipping }: InventoryCardPro
                 </div>
             </div>
 
-            <Button
-                onClick={() => onEquip(inventoryItem.id)}
-                disabled={isEquipping}
-                className="w-full"
-                variant={isEquipped ? 'outline' : 'primary'}
-            >
-                {isEquipping ? 'Művelet...' : isEquipped ? (
-                    <>
-                        <X className="w-4 h-4 mr-2" />
-                        Levétel
-                    </>
-                ) : (
-                    <>
-                        <Check className="w-4 h-4 mr-2" />
-                        Felszerelés
-                    </>
+            <div className="flex gap-2">
+                <Button
+                    onClick={() => onEquip(inventoryItem.id)}
+                    disabled={isEquipping || isListed}
+                    className="flex-1"
+                    variant={isEquipped ? 'outline' : 'primary'}
+                >
+                    {isEquipping ? 'Művelet...' : isEquipped ? (
+                        <>
+                            <X className="w-4 h-4 mr-2" />
+                            Levétel
+                        </>
+                    ) : (
+                        <>
+                            <Check className="w-4 h-4 mr-2" />
+                            Felszerelés
+                        </>
+                    )}
+                </Button>
+
+                {!isListed && (
+                    <Button
+                        onClick={() => onSell(inventoryItem.id, item.name)}
+                        disabled={isEquipping || isEquipped}
+                        className="flex-1"
+                        variant="outline"
+                    >
+                        <Tag className="w-4 h-4 mr-2" />
+                        Eladás
+                    </Button>
                 )}
-            </Button>
+            </div>
         </div>
     );
 };
@@ -81,6 +105,12 @@ export const InventoryPage = () => {
     const [inventory, setInventory] = useState<InventoryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [equippingItemId, setEquippingItemId] = useState<string | null>(null);
+
+    // Selling state
+    const [sellModalOpen, setSellModalOpen] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+    const [selectedItemName, setSelectedItemName] = useState<string>('');
+    const [isListing, setIsListing] = useState(false);
 
     useEffect(() => {
         loadInventory();
@@ -111,9 +141,40 @@ export const InventoryPage = () => {
         }
     };
 
+    const handleSellClick = (inventoryId: string, itemName: string) => {
+        setSelectedItemId(inventoryId);
+        setSelectedItemName(itemName);
+        setSellModalOpen(true);
+    };
+
+    const handleSellConfirm = async (inventoryId: string, price: string) => {
+        setIsListing(true);
+        try {
+            await createListing(inventoryId, price);
+            addToast('Tárgy sikeresen feltéve a piacra!', 'success');
+            setSellModalOpen(false);
+            await loadInventory();
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'Hiba történt a listázás során.';
+            addToast(errorMessage, 'error');
+        } finally {
+            setIsListing(false);
+        }
+    };
+
     return (
         <DashboardLayout>
             <ToastContainer toasts={toasts} removeToast={removeToast} />
+
+            {sellModalOpen && selectedItemId && (
+                <SellItemModal
+                    itemName={selectedItemName}
+                    inventoryId={selectedItemId}
+                    onClose={() => setSellModalOpen(false)}
+                    onConfirm={handleSellConfirm}
+                    isLoading={isListing}
+                />
+            )}
 
             <div className="space-y-6">
                 <div>
@@ -140,6 +201,7 @@ export const InventoryPage = () => {
                                     key={inventoryItem.id}
                                     inventoryItem={inventoryItem}
                                     onEquip={handleEquip}
+                                    onSell={handleSellClick}
                                     isEquipping={equippingItemId === inventoryItem.id}
                                 />
                             ))}

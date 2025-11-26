@@ -128,19 +128,6 @@ Cél: Egy játszható alapverzió, ahol regisztrálni lehet, van energiarendszer
 
 [x] 🟢 Bejelentkezés/Regisztráció űrlapok bekötése
 
-⚔️ FÁZIS 2: Interakció és Harc
-
-Cél: A játékosok közötti konfliktus megteremtése.
-🎨 **Design:** Legutóbbi események (Activity Feed) oldalsávban sticky pozícióval.
-Technikai: UserProperty kapcsolótábla, 24 órás bevétel limit (cap).
-
-[0.3.0] - 2025-11-26
-
-Performance: Adatbázis indexek hozzáadva (User: xp, cash, username, clanId; Clan: leaderId).
-Performance: Query optimalizálás (UsersService) - csak a szükséges mezők lekérése.
-Technikai: Redis Cache előkészület (TODO) a ranglistákhoz.
-
-[0.2.9] - 2025-11-26
 
 Technikai: Race Condition javítások (Pessimistic Locking).
 Technikai: MarketService, CrimesService, FightService, UsersService, PropertiesService tranzakciók védelme.

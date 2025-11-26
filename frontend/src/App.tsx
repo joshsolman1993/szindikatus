@@ -10,6 +10,7 @@ import { GymPage } from './pages/GymPage';
 import { TheStreetsPage } from './pages/TheStreetsPage';
 import { BlackMarketPage } from './pages/BlackMarketPage';
 import { InventoryPage } from './pages/InventoryPage';
+import { PlayerMarketPage } from './pages/PlayerMarketPage';
 import { ClansPage } from './pages/ClansPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -38,6 +39,7 @@ function App() {
             <Route path="/streets" element={<TheStreetsPage />} />
             <Route path="/market" element={<BlackMarketPage />} />
             <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="/player-market" element={<PlayerMarketPage />} />
             <Route path="/clans" element={<ClansPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
