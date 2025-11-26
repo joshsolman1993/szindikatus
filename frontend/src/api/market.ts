@@ -19,6 +19,8 @@ export interface InventoryItem {
     isListed?: boolean; // Optional field for marketplace listing status
     item: ShopItem;
     createdAt: string;
+    rarity: 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
+    quality: number;
 }
 
 export const getShopItems = async (): Promise<ShopItem[]> => {

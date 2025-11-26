@@ -9,6 +9,8 @@ import { LevelingService } from '../common/services/leveling.service';
 import { TalentId } from '../talents/talents.constants';
 import { MissionsService } from '../missions/missions.service';
 import { MissionRequirementType } from '../missions/entities/mission.entity';
+import { LootService } from '../items/loot.service';
+import { Item } from '../items/entities/item.entity';
 
 @Injectable()
 export class CrimesService implements OnModuleInit {
@@ -26,6 +28,9 @@ export class CrimesService implements OnModuleInit {
         private dataSource: DataSource,
         private readonly levelingService: LevelingService,
         private readonly missionsService: MissionsService,
+        private readonly lootService: LootService,
+        @InjectRepository(Item)
+        private itemsRepository: Repository<Item>,
     ) { }
 
     async onModuleInit() {
@@ -150,6 +155,26 @@ export class CrimesService implements OnModuleInit {
                 result.gainedMoney = moneyReward;
                 result.gainedXp = crime.xpReward;
                 result.message = `Sikeres bűntény! Szereztél $${moneyReward}-t.`;
+
+                // Loot Drop Logic
+                const dropChance = 0.10; // 10%
+                if (Math.random() < dropChance) {
+                    const itemCount = await this.itemsRepository.count();
+                    if (itemCount > 0) {
+                        const randomOffset = Math.floor(Math.random() * itemCount);
+                        const randomItems = await this.itemsRepository.find({
+                            skip: randomOffset,
+                            take: 1
+                        });
+                        const randomItem = randomItems[0];
+
+                        if (randomItem) {
+                            const lootedItem = await this.lootService.generateLoot(randomItem.id, userId);
+                            result.message += ` Találtál egy ${lootedItem.rarity} ${randomItem.name}-t!`;
+                            (result as any).foundItem = lootedItem;
+                        }
+                    }
+                }
 
                 // Track Mission Progress
                 this.missionsService.trackProgress(userId, MissionRequirementType.CRIME, 1);

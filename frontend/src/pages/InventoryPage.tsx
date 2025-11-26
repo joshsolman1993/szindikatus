@@ -18,6 +18,18 @@ const InventoryCard = ({ inventoryItem, onEquip, onSell, isEquipping }: Inventor
     const isEquipped = inventoryItem.isEquipped;
     const isListed = (inventoryItem as any).isListed || false; // Check if item is listed
     const item = inventoryItem.item;
+    const rarity = inventoryItem.rarity || 'COMMON';
+    const quality = inventoryItem.quality || 1.0;
+
+    const rarityColors = {
+        COMMON: 'text-gray-400',
+        UNCOMMON: 'text-green-500',
+        RARE: 'text-blue-500',
+        EPIC: 'text-purple-500',
+        LEGENDARY: 'text-orange-500 animate-pulse',
+    };
+
+    const calculateStat = (base: number) => Math.floor(base * quality);
 
     return (
         <div className={`bg-surface border-2 rounded-lg p-4 transition-all ${isEquipped ? 'border-success' : isListed ? 'border-accent' : 'border-gray-800 hover:border-gray-700'
@@ -37,7 +49,7 @@ const InventoryCard = ({ inventoryItem, onEquip, onSell, isEquipping }: Inventor
             )}
 
             <div className="mb-4">
-                <h3 className="text-lg font-display font-bold text-white mb-2">{item.name}</h3>
+                <h3 className={`text-lg font-display font-bold mb-2 ${rarityColors[rarity]}`}>{item.name}</h3>
                 <div className="inline-block px-2 py-1 bg-gray-900 border border-gray-700 rounded text-xs text-gray-400 mb-3">
                     {item.type}
                 </div>
@@ -46,19 +58,28 @@ const InventoryCard = ({ inventoryItem, onEquip, onSell, isEquipping }: Inventor
                     {item.bonusStr > 0 && (
                         <div className="flex justify-between text-gray-400">
                             <span>Erő:</span>
-                            <span className="text-red-500 font-semibold">+{item.bonusStr}</span>
+                            <span className="text-red-500 font-semibold">
+                                +{calculateStat(item.bonusStr)}
+                                {quality > 1.0 && <span className="text-xs ml-1 opacity-75">(+{calculateStat(item.bonusStr) - item.bonusStr})</span>}
+                            </span>
                         </div>
                     )}
                     {item.bonusDef > 0 && (
                         <div className="flex justify-between text-gray-400">
                             <span>Védelem:</span>
-                            <span className="text-green-500 font-semibold">+{item.bonusDef}</span>
+                            <span className="text-green-500 font-semibold">
+                                +{calculateStat(item.bonusDef)}
+                                {quality > 1.0 && <span className="text-xs ml-1 opacity-75">(+{calculateStat(item.bonusDef) - item.bonusDef})</span>}
+                            </span>
                         </div>
                     )}
                     {item.bonusSpd > 0 && (
                         <div className="flex justify-between text-gray-400">
                             <span>Gyorsaság:</span>
-                            <span className="text-yellow-500 font-semibold">+{item.bonusSpd}</span>
+                            <span className="text-yellow-500 font-semibold">
+                                +{calculateStat(item.bonusSpd)}
+                                {quality > 1.0 && <span className="text-xs ml-1 opacity-75">(+{calculateStat(item.bonusSpd) - item.bonusSpd})</span>}
+                            </span>
                         </div>
                     )}
                 </div>

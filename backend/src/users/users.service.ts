@@ -160,9 +160,10 @@ export class UsersService {
         const equippedItemNames: string[] = [];
 
         for (const inv of equippedInventory) {
-            bonusStr += inv.item.bonusStr;
-            bonusDef += inv.item.bonusDef;
-            bonusSpd += inv.item.bonusSpd;
+            const quality = inv.quality || 1.0;
+            bonusStr += Math.floor(inv.item.bonusStr * quality);
+            bonusDef += Math.floor(inv.item.bonusDef * quality);
+            bonusSpd += Math.floor(inv.item.bonusSpd * quality);
             equippedItemNames.push(inv.item.name);
         }
 

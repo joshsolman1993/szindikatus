@@ -2,6 +2,14 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDa
 import { User } from '../../users/entities/user.entity';
 import { Item } from './item.entity';
 
+export enum ItemRarity {
+    COMMON = 'COMMON',
+    UNCOMMON = 'UNCOMMON',
+    RARE = 'RARE',
+    EPIC = 'EPIC',
+    LEGENDARY = 'LEGENDARY',
+}
+
 @Entity('inventory')
 export class Inventory {
     @PrimaryGeneratedColumn('uuid')
@@ -26,6 +34,16 @@ export class Inventory {
     @ManyToOne(() => Item)
     @JoinColumn({ name: 'itemId' })
     item: Item;
+
+    @Column({
+        type: 'enum',
+        enum: ItemRarity,
+        default: ItemRarity.COMMON
+    })
+    rarity: ItemRarity;
+
+    @Column({ type: 'float', default: 1.0 })
+    quality: number;
 
     @CreateDateColumn()
     createdAt: Date;

@@ -3,8 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Item } from './entities/item.entity';
 import { Inventory } from './entities/inventory.entity';
 
+import { LootService } from './loot.service';
+
 @Module({
     imports: [TypeOrmModule.forFeature([Item, Inventory])],
-    exports: [TypeOrmModule],
+    providers: [LootService],
+    exports: [TypeOrmModule, LootService],
 })
 export class ItemsModule { }
