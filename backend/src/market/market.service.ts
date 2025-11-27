@@ -6,6 +6,8 @@ import { Inventory } from '../items/entities/inventory.entity';
 import { User } from '../users/entities/user.entity';
 import { MarketListing } from './entities/market-listing.entity';
 import { EventsGateway } from '../events/events.gateway';
+import { ChatService } from '../chat/chat.service';
+import { ChatGateway } from '../chat/chat.gateway';
 
 @Injectable()
 export class MarketService implements OnModuleInit {
@@ -19,10 +21,27 @@ export class MarketService implements OnModuleInit {
         @InjectRepository(MarketListing)
         private marketListingRepository: Repository<MarketListing>,
         private eventsGateway: EventsGateway,
+        private chatService: ChatService,
+        private chatGateway: ChatGateway,
     ) { }
 
     async onModuleInit() {
         await this.seedShopItems();
+        await this.seedSystemUser();
+    }
+
+    private async seedSystemUser() {
+        const systemUser = await this.usersRepository.findOne({ where: { username: 'Rendszer' } });
+        if (!systemUser) {
+            const user = this.usersRepository.create({
+                username: 'Rendszer',
+                email: 'system@szindikatus.hu',
+                password_hash: '$2b$10$EpRnTzVlqHNP0.fKb.U9H.micro', // Dummy hash
+                cash: '999999999',
+            });
+            await this.usersRepository.save(user);
+            console.log('✅ System user seeded');
+        }
     }
 
     // Seed initial shop items
@@ -232,6 +251,29 @@ export class MarketService implements OnModuleInit {
                 type: 'market_sale',
                 message: `${buyer.username} megvette a ${inventory.item.name} tárgyadat ${sellerReceives} €-ért!`,
             });
+
+            // Send System Message (DM)
+            const systemUser = await manager.findOne(User, { where: { username: 'Rendszer' } });
+            if (systemUser) {
+                const msgContent = `Rendszer: ${buyer.username} megvette a(z) ${inventory.item.name} tárgyadat ${sellerReceives} €-ért.`;
+                // We cannot use this.chatService inside transaction if it uses its own repository/manager?
+                // ChatService uses injected Repository. It will use a separate connection/manager, not the transaction manager.
+                // This is fine for the message itself (it doesn't need to be in the same transaction strictly, but ideally yes).
+                // If we want it in transaction, we need to pass manager to ChatService or replicate logic.
+                // For now, doing it outside transaction or just letting it be separate is acceptable for this scope.
+                // But wait, we are inside `this.usersRepository.manager.transaction`.
+                // If `chatService.saveMessage` fails, the transaction might still commit (if we await it and catch error or if it's after critical parts).
+                // Ideally we should use the transaction manager.
+                // But ChatService doesn't accept manager.
+                // I'll just call it. If it fails, the message is lost but the transaction succeeds. That's acceptable.
+
+                try {
+                    const message = await this.chatService.saveMessage(systemUser.id, seller.id, msgContent);
+                    this.chatGateway.server.to(`user_${seller.id}`).emit('privateMessage', message);
+                } catch (e) {
+                    console.error('Failed to send system message', e);
+                }
+            }
 
             return {
                 message: `Sikeresen megvetted: ${inventory.item.name}!`,

@@ -9,7 +9,8 @@ import {
     cancelListing,
     type MarketListing,
 } from '../api/market';
-import { ShoppingCart, Store, Tag, User, TrendingUp, X } from 'lucide-react';
+import { ShoppingCart, Store, Tag, User, TrendingUp, X, MessageSquare } from 'lucide-react';
+import { useChat } from '../context/ChatContext';
 import { Button } from '../components/ui/Button';
 
 interface ListingCardProps {
@@ -24,6 +25,7 @@ interface ListingCardProps {
 const ListingCard = ({ listing, onBuy, onCancel, isBuying, isCanceling, isMyListing }: ListingCardProps) => {
     const item = listing.inventory.item;
     const price = parseInt(listing.price);
+    const { openPrivateChat } = useChat();
 
     return (
         <div className="bg-surface border-2 border-gray-800 hover:border-gray-700 rounded-lg p-4 transition-all">
@@ -38,10 +40,17 @@ const ListingCard = ({ listing, onBuy, onCancel, isBuying, isCanceling, isMyList
 
                 <div className="flex items-center gap-2 text-gray-400 text-sm mb-3">
                     {!isMyListing && (
-                        <>
+                        <div className="flex items-center gap-2">
                             <User className="w-4 h-4" />
                             <span>{listing.seller.username}</span>
-                        </>
+                            <button
+                                onClick={() => openPrivateChat(listing.seller.id, listing.seller.username)}
+                                className="text-gray-400 hover:text-white transition-colors ml-1"
+                                title="Üzenet küldése"
+                            >
+                                <MessageSquare className="w-4 h-4" />
+                            </button>
+                        </div>
                     )}
                     <div className="inline-block px-2 py-1 bg-gray-900 border border-gray-700 rounded text-xs">
                         {item.type}
@@ -178,8 +187,8 @@ export const PlayerMarketPage = () => {
                     <button
                         onClick={() => setActiveTab('buy')}
                         className={`px-6 py-3 font-semibold transition-all relative ${activeTab === 'buy'
-                                ? 'text-accent'
-                                : 'text-gray-400 hover:text-gray-300'
+                            ? 'text-accent'
+                            : 'text-gray-400 hover:text-gray-300'
                             }`}
                     >
                         <div className="flex items-center gap-2">
@@ -194,8 +203,8 @@ export const PlayerMarketPage = () => {
                     <button
                         onClick={() => setActiveTab('sell')}
                         className={`px-6 py-3 font-semibold transition-all relative ${activeTab === 'sell'
-                                ? 'text-accent'
-                                : 'text-gray-400 hover:text-gray-300'
+                            ? 'text-accent'
+                            : 'text-gray-400 hover:text-gray-300'
                             }`}
                     >
                         <div className="flex items-center gap-2">

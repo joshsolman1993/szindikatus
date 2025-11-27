@@ -21,39 +21,43 @@ import { CityMapPage } from './pages/CityMap';
 import { MissionsPage } from './pages/MissionsPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
+import { ChatProvider } from './context/ChatContext';
+
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+      <ChatProvider>
+        <Router>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/crimes" element={<CrimesPage />} />
-            <Route path="/gym" element={<GymPage />} />
-            <Route path="/streets" element={<TheStreetsPage />} />
-            <Route path="/market" element={<BlackMarketPage />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/player-market" element={<PlayerMarketPage />} />
-            <Route path="/clans" element={<ClansPage />} />
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/casino" element={<CasinoPage />} />
-            <Route path="/properties" element={<PropertiesPage />} />
-            <Route path="/talents" element={<TalentsPage />} />
-            <Route path="/map" element={<CityMapPage />} />
-            <Route path="/missions" element={<MissionsPage />} />
-          </Route>
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/crimes" element={<CrimesPage />} />
+              <Route path="/gym" element={<GymPage />} />
+              <Route path="/streets" element={<TheStreetsPage />} />
+              <Route path="/market" element={<BlackMarketPage />} />
+              <Route path="/inventory" element={<InventoryPage />} />
+              <Route path="/player-market" element={<PlayerMarketPage />} />
+              <Route path="/clans" element={<ClansPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/casino" element={<CasinoPage />} />
+              <Route path="/properties" element={<PropertiesPage />} />
+              <Route path="/talents" element={<TalentsPage />} />
+              <Route path="/map" element={<CityMapPage />} />
+              <Route path="/missions" element={<MissionsPage />} />
+            </Route>
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </ChatProvider>
     </AuthProvider>
   );
 }

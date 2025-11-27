@@ -7,11 +7,13 @@ import { Item } from '../items/entities/item.entity';
 import { Inventory } from '../items/entities/inventory.entity';
 import { User } from '../users/entities/user.entity';
 import { EventsModule } from '../events/events.module';
+import { ChatModule } from '../chat/chat.module';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([MarketListing, Item, Inventory, User]),
         EventsModule,
+        ChatModule,
     ],
     providers: [MarketService],
     controllers: [MarketController],

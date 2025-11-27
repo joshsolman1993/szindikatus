@@ -7,7 +7,8 @@ import { useToast } from '../hooks/useToast';
 import { useGameSound } from '../hooks/useGameSound';
 import { getPlayers, type PublicUser } from '../api/users';
 import { attackPlayer, type FightResult } from '../api/fight';
-import { Search, Swords } from 'lucide-react';
+import { Search, Swords, MessageSquare } from 'lucide-react';
+import { useChat } from '../context/ChatContext';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Skeleton } from '../components/ui/Skeleton';
@@ -19,6 +20,7 @@ interface PlayerCardProps {
 }
 
 const PlayerCard = ({ player, onAttack, isAttacking }: PlayerCardProps) => {
+    const { openPrivateChat } = useChat();
     return (
         <div className="bg-surface border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition-all">
             <div className="flex items-center gap-4 mb-4">
@@ -51,6 +53,14 @@ const PlayerCard = ({ player, onAttack, isAttacking }: PlayerCardProps) => {
             >
                 <Swords className="w-4 h-4 mr-2" />
                 {isAttacking ? 'Támadás...' : 'Támadás'}
+            </Button>
+            <Button
+                onClick={() => openPrivateChat(player.id, player.username)}
+                className="w-full mt-2"
+                variant="secondary"
+            >
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Üzenet
             </Button>
         </div>
     );

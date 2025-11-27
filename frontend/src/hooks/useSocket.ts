@@ -16,6 +16,7 @@ export const useSocket = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [systemEvents, setSystemEvents] = useState<Message[]>([]);
     const [isConnected, setIsConnected] = useState(false);
+    const [lastPrivateMessage, setLastPrivateMessage] = useState<any>(null);
 
     useEffect(() => {
         if (!isAuthenticated || !token) {
@@ -52,6 +53,14 @@ export const useSocket = () => {
             setSystemEvents((prev) => [...prev, { ...data, timestamp: new Date(data.timestamp) }]);
         });
 
+        newSocket.on('privateMessage', (data: any) => {
+            setLastPrivateMessage({ ...data, timestamp: new Date(data.createdAt) });
+        });
+
+        newSocket.on('privateMessageSent', (data: any) => {
+            setLastPrivateMessage({ ...data, timestamp: new Date(data.createdAt) });
+        });
+
         setSocket(newSocket);
 
         return () => {
@@ -65,11 +74,19 @@ export const useSocket = () => {
         }
     };
 
+    const sendPrivateMessage = (receiverId: string, content: string) => {
+        if (socket && isConnected) {
+            socket.emit('sendPrivateMessage', { receiverId, content });
+        }
+    };
+
     return {
         socket,
         isConnected,
         messages,
         systemEvents,
+        lastPrivateMessage,
         sendMessage,
+        sendPrivateMessage,
     };
 };
