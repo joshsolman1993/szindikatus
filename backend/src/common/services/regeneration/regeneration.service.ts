@@ -14,24 +14,36 @@ export class RegenerationService {
         private usersRepository: Repository<User>,
     ) { }
 
+    /**
+     * Automatikus regeneráció minden percben
+     * - Energia: +5 / perc (max: MAX_ENERGY)
+     * - Bátorság: +1 / perc (max: MAX_NERVE)
+     * - HP: +5 / perc (max: MAX_HP)
+     * 
+     * Optimalizált: Egyetlen SQL UPDATE parancs, csak azokat a usereket frissíti,
+     * akiknek legalább egy értéke nem maximális.
+     */
     @Cron(CronExpression.EVERY_MINUTE)
     async handleRegeneration() {
         this.logger.log('Starting regeneration tick...');
 
-        // Energia visszatöltés: +5, de max 100
-        // Bátorság visszatöltés: +1, de max 10
+        try {
+            const result = await this.usersRepository
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    energy: () => `LEAST(energy + 5, ${GameBalance.MAX_ENERGY})`,
+                    nerve: () => `LEAST(nerve + 1, ${GameBalance.MAX_NERVE})`,
+                    hp: () => `LEAST(hp + 5, ${GameBalance.MAX_HP})`,
+                })
+                .where(
+                    `energy < ${GameBalance.MAX_ENERGY} OR nerve < ${GameBalance.MAX_NERVE} OR hp < ${GameBalance.MAX_HP}`
+                )
+                .execute();
 
-        // Optimalizált SQL UPDATE
-        await this.usersRepository
-            .createQueryBuilder()
-            .update(User)
-            .set({
-                energy: () => `LEAST(energy + 5, ${GameBalance.MAX_ENERGY})`,
-                nerve: () => `LEAST(nerve + 1, ${GameBalance.MAX_NERVE})`,
-            })
-            .where(`energy < ${GameBalance.MAX_ENERGY} OR nerve < ${GameBalance.MAX_NERVE}`)
-            .execute();
-
-        this.logger.log('Regeneration tick completed.');
+            this.logger.log(`Regeneration tick completed. Updated ${result.affected} users.`);
+        } catch (error) {
+            this.logger.error('Regeneration tick failed:', error);
+        }
     }
 }

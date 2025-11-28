@@ -1,5 +1,19 @@
 # Projekt Napló
 
+## [2025-11-28] - Automated Regeneration & Daily Reset
+- Implementáltam az automatikus regenerációs rendszert:
+  - Energia: +5 / perc (max: 100)
+  - Bátorság: +1 / perc (max: 10)
+  - HP: +5 / perc (max: 100)
+  - Optimalizált SQL UPDATE (csak azokat a usereket frissíti, akiknek szükségük van rá)
+- Létrehoztam a `DailyResetService`-t:
+  - Minden éjfélkor (00:00) automatikusan reseteli a DAILY típusú missziók progress-ét
+  - Timezone: Europe/Budapest
+  - Error handling és logging
+- Frissítettem a `RegenerationService`-t: HP regeneráció hozzáadása, try-catch error handling
+- Módosítottam a `/users/refill-energy` endpoint-ot: csak development módban használható (production-ben az automatikus regeneráció működik)
+- A játék mostantól "él": a játékosoknak nem kell manuálisan tölteniük az energiát, és a napi missziók automatikusan újraindulnak
+
 ## [2025-11-26] - Rarity & Loot System
 - Implementáltam az Item Rarity rendszert (Common, Uncommon, Rare, Epic, Legendary).
 - Létrehoztam a `LootService`-t a véletlenszerű tárgyak generálásához minőség (quality) és ritkaság alapján.

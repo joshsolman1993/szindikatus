@@ -37,8 +37,13 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Post('refill-energy')
     async refillEnergy(@Request() req) {
+        // Dev-only endpoint: Production-ben az automatikus regeneráció működik
+        if (process.env.NODE_ENV === 'production') {
+            throw new Error('Manual refill is disabled in production. Use automatic regeneration.');
+        }
+
         await this.usersService.refillEnergy(req.user.userId);
-        return { message: 'Energia és HP feltöltve!' };
+        return { message: 'Energia és HP feltöltve! (Dev mode)' };
     }
 
     @UseGuards(JwtAuthGuard)

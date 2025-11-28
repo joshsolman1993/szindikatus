@@ -80,7 +80,7 @@ export class User {
         soundEnabled: boolean;
     };
 
-    @Column({ nullable: true })
+    @Column({ type: 'text', nullable: true })
     avatarUrl: string | null;
 
     @CreateDateColumn()
