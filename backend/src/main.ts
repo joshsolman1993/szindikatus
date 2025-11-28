@@ -1,29 +1,40 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
-import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // CORS engedélyezése a frontend számára
+  // Get ConfigService
+  const configService = app.get(ConfigService);
+
+  // Security: Helmet middleware (XSS, Clickjacking protection)
+  app.use(helmet());
+
+  // CORS: Strict origin policy (only allow frontend URL)
+  const frontendUrl = configService.get<string>('FRONTEND_URL', 'http://localhost:5173');
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: frontendUrl,
     credentials: true,
   });
 
-  // Globális hibakezelő regisztrálása
+  // Global exception filter
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  // Globális validáció bekapcsolása
+  // Global validation pipe (strict)
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Csak a DTO-ban definiált mezőket engedi át
-      forbidNonWhitelisted: true, // Hiba, ha extra mező van
-      transform: true, // Automatikus típuskonverzió
+      whitelist: true, // Only allow DTO-defined fields
+      forbidNonWhitelisted: true, // Throw error if extra fields are present
+      transform: true, // Automatic type conversion
     }),
   );
 
-  await app.listen(3000);
+  const port = configService.get<number>('PORT', 3000);
+  await app.listen(port);
+  console.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 bootstrap();

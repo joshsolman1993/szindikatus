@@ -1,5 +1,29 @@
 # Projekt Napló
 
+## [2025-11-28] - Security Hardening
+- Implementáltam a biztonsági megerősítéseket:
+  - **Rate Limiting (Throttler):**
+    - Telepítettem a `@nestjs/throttler` csomagot
+    - Globális limit: 100 kérés / perc / IP
+    - Kritikus endpoint-ok szigorú limittel:
+      - `POST /auth/login`: 5 kérés / perc (brute-force védelem)
+      - `POST /auth/register`: 3 kérés / perc (spam védelem)
+      - `POST /crimes/commit/:id`: 10 kérés / perc
+      - `POST /fight/attack/:targetId`: 10 kérés / perc
+  - **Helmet Middleware:**
+    - XSS védelem (Cross-Site Scripting)
+    - Clickjacking védelem
+    - HTTP headers biztonsági beállítások
+  - **CORS Szigorítás:**
+    - Csak a frontend URL-t fogadja el (FRONTEND_URL env változó)
+    - Hardcoded `origin: '*'` eltávolítva
+    - Production-ready konfiguráció
+  - **ValidationPipe Szigorítás:**
+    - `whitelist: true` - Csak DTO-ban definiált mezők
+    - `forbidNonWhitelisted: true` - Hiba extra mezők esetén
+    - `transform: true` - Automatikus típuskonverzió
+- A rendszer mostantól **biztonságos** brute-force, spam és XSS támadások ellen
+
 ## [2025-11-28] - Redis Caching for Performance
 - Implementáltam a Redis cache rendszert a nehéz lekérdezésekhez:
   - Telepítettem a `@nestjs/cache-manager`, `cache-manager` és `cache-manager-redis-yet` csomagokat

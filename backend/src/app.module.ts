@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { redisStore } from 'cache-manager-redis-yet';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -32,6 +33,12 @@ import { MissionsModule } from './missions/missions.module';
       isGlobal: true,
     }),
     ScheduleModule.forRoot(),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000, // 60 seconds
+        limit: 100, // 100 requests per 60 seconds per IP
+      },
+    ]),
     CacheModule.registerAsync({
       isGlobal: true,
       imports: [ConfigModule],
