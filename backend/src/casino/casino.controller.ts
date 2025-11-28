@@ -6,15 +6,15 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('casino')
 @UseGuards(JwtAuthGuard)
 export class CasinoController {
-    constructor(private readonly casinoService: CasinoService) { }
+  constructor(private readonly casinoService: CasinoService) {}
 
-    @Post('coinflip')
-    coinflip(@Request() req, @Body() dto: CoinflipDto) {
-        return this.casinoService.coinflip(req.user.userId, dto.amount, dto.choice);
-    }
+  @Post('coinflip')
+  coinflip(@Request() req, @Body() dto: CoinflipDto) {
+    return this.casinoService.coinflip(req.user.userId, dto.amount, dto.choice);
+  }
 
-    @Post('spin')
-    spin(@Request() req, @Body() dto: SpinDto) {
-        return this.casinoService.spin(req.user.userId, dto.amount);
-    }
+  @Post('spin')
+  spin(@Request() req, @Body() dto: SpinDto) {
+    return this.casinoService.spin(req.user.userId, dto.amount);
+  }
 }

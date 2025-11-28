@@ -4,7 +4,7 @@ import { EventsService } from './events.service';
 
 @Global()
 @Module({
-    providers: [EventsGateway, EventsService],
-    exports: [EventsGateway, EventsService],
+  providers: [EventsGateway, EventsService],
+  exports: [EventsGateway, EventsService],
 })
-export class EventsModule { }
+export class EventsModule {}

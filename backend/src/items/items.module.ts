@@ -6,8 +6,8 @@ import { Inventory } from './entities/inventory.entity';
 import { LootService } from './loot.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Item, Inventory])],
-    providers: [LootService],
-    exports: [TypeOrmModule, LootService],
+  imports: [TypeOrmModule.forFeature([Item, Inventory])],
+  providers: [LootService],
+  exports: [TypeOrmModule, LootService],
 })
-export class ItemsModule { }
+export class ItemsModule {}

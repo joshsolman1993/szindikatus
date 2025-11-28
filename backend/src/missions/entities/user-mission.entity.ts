@@ -1,32 +1,38 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Mission } from './mission.entity';
 
 @Entity('user_missions')
 export class UserMission {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    userId: string;
+  @Column()
+  userId: string;
 
-    @ManyToOne(() => User)
-    @JoinColumn({ name: 'userId' })
-    user: User;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
-    @Column()
-    missionId: number;
+  @Column()
+  missionId: number;
 
-    @ManyToOne(() => Mission)
-    @JoinColumn({ name: 'missionId' })
-    mission: Mission;
+  @ManyToOne(() => Mission)
+  @JoinColumn({ name: 'missionId' })
+  mission: Mission;
 
-    @Column({ type: 'int', default: 0 })
-    progress: number;
+  @Column({ type: 'int', default: 0 })
+  progress: number;
 
-    @Column({ default: false })
-    isCompleted: boolean;
+  @Column({ default: false })
+  isCompleted: boolean;
 
-    @Column({ default: false })
-    isClaimed: boolean;
+  @Column({ default: false })
+  isClaimed: boolean;
 }

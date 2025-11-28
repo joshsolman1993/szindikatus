@@ -16,10 +16,10 @@ import { ItemsModule } from '../items/items.module';
     TypeOrmModule.forFeature([Crime, User, District, Clan]),
     CommonModule,
     MissionsModule,
-    ItemsModule
+    ItemsModule,
   ],
   controllers: [CrimesController],
   providers: [CrimesService],
-  exports: [CrimesService]
+  exports: [CrimesService],
 })
-export class CrimesModule { }
+export class CrimesModule {}

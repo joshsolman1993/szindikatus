@@ -4,7 +4,7 @@ import { UsersModule } from '../users/users.module';
 import { ClansModule } from '../clans/clans.module';
 
 @Module({
-    imports: [UsersModule, ClansModule],
-    controllers: [LeaderboardController],
+  imports: [UsersModule, ClansModule],
+  controllers: [LeaderboardController],
 })
-export class LeaderboardModule { }
+export class LeaderboardModule {}

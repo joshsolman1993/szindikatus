@@ -9,12 +9,12 @@ import { EventsModule } from '../events/events.module';
 
 @Global()
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Mission, UserMission, User]),
-        EventsModule,
-    ],
-    controllers: [MissionsController],
-    providers: [MissionsService],
-    exports: [MissionsService],
+  imports: [
+    TypeOrmModule.forFeature([Mission, UserMission, User]),
+    EventsModule,
+  ],
+  controllers: [MissionsController],
+  providers: [MissionsService],
+  exports: [MissionsService],
 })
-export class MissionsModule { }
+export class MissionsModule {}

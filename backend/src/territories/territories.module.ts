@@ -8,12 +8,9 @@ import { User } from '../users/entities/user.entity';
 import { EventsModule } from '../events/events.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([District, Clan, User]),
-        EventsModule,
-    ],
-    controllers: [TerritoriesController],
-    providers: [TerritoriesService],
-    exports: [TerritoriesService],
+  imports: [TypeOrmModule.forFeature([District, Clan, User]), EventsModule],
+  controllers: [TerritoriesController],
+  providers: [TerritoriesService],
+  exports: [TerritoriesService],
 })
-export class TerritoriesModule { }
+export class TerritoriesModule {}

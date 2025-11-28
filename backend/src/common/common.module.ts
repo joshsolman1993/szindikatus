@@ -11,9 +11,18 @@ import { EventsModule } from '../events/events.module';
 import { LevelingService } from './services/leveling.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User, UserMission]), ChatModule, MissionsModule, EventsModule],
-    providers: [RegenerationService, DailyResetService, LevelingService],
-    exports: [RegenerationService, DailyResetService, LevelingService, EventsModule],
+  imports: [
+    TypeOrmModule.forFeature([User, UserMission]),
+    ChatModule,
+    MissionsModule,
+    EventsModule,
+  ],
+  providers: [RegenerationService, DailyResetService, LevelingService],
+  exports: [
+    RegenerationService,
+    DailyResetService,
+    LevelingService,
+    EventsModule,
+  ],
 })
-export class CommonModule { }
-
+export class CommonModule {}

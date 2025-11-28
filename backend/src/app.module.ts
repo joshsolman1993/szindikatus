@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/entities/user.entity';
@@ -24,47 +26,60 @@ import { TerritoriesModule } from './territories/territories.module';
 import { MissionsModule } from './missions/missions.module';
 
 @Module({
-    imports: [
-        ConfigModule.forRoot({
-            envFilePath: '../.env',
-            isGlobal: true,
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '../.env',
+      isGlobal: true,
+    }),
+    ScheduleModule.forRoot(),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        store: await redisStore({
+          socket: {
+            host: configService.get<string>('REDIS_HOST', 'localhost'),
+            port: configService.get<number>('REDIS_PORT', 6379),
+          },
         }),
-        ScheduleModule.forRoot(),
-        TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: (configService: ConfigService) => ({
-                type: 'postgres',
-                host: configService.get<string>('DB_HOST'),
-                port: configService.get<number>('DB_PORT'),
-                username: configService.get<string>('DB_USERNAME'),
-                password: configService.get<string>('DB_PASSWORD'),
-                database: configService.get<string>('DB_DATABASE'),
-                entities: [User],
-                synchronize: true,
-                autoLoadEntities: true,
-            }),
-            inject: [ConfigService],
-        }),
-        UsersModule,
-        AuthModule,
-        CrimesModule,
-        CommonModule,
-        FightModule,
-        ItemsModule,
-        MarketModule,
-        InventoryModule,
-        ChatModule,
-        ClansModule,
-        LeaderboardModule,
-        CasinoModule,
-        PropertiesModule,
-        TalentsModule,
-        EventsModule,
-        TerritoriesModule,
-        MissionsModule,
-    ],
-    controllers: [AppController],
-    providers: [AppService],
+        ttl: 60 * 1000, // Default TTL: 60 seconds (in milliseconds)
+      }),
+      inject: [ConfigService],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [User],
+        synchronize: true,
+        autoLoadEntities: true,
+      }),
+      inject: [ConfigService],
+    }),
+    UsersModule,
+    AuthModule,
+    CrimesModule,
+    CommonModule,
+    FightModule,
+    ItemsModule,
+    MarketModule,
+    InventoryModule,
+    ChatModule,
+    ClansModule,
+    LeaderboardModule,
+    CasinoModule,
+    PropertiesModule,
+    TalentsModule,
+    EventsModule,
+    TerritoriesModule,
+    MissionsModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule { }
-

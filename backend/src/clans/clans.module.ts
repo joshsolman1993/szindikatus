@@ -6,9 +6,9 @@ import { Clan } from './entities/clan.entity';
 import { User } from '../users/entities/user.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Clan, User])],
-    controllers: [ClansController],
-    providers: [ClansService],
-    exports: [ClansService],
+  imports: [TypeOrmModule.forFeature([Clan, User])],
+  controllers: [ClansController],
+  providers: [ClansService],
+  exports: [ClansService],
 })
-export class ClansModule { }
+export class ClansModule {}

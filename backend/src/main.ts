@@ -16,11 +16,13 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   // Globális validáció bekapcsolása
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true, // Csak a DTO-ban definiált mezőket engedi át
-    forbidNonWhitelisted: true, // Hiba, ha extra mező van
-    transform: true, // Automatikus típuskonverzió
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Csak a DTO-ban definiált mezőket engedi át
+      forbidNonWhitelisted: true, // Hiba, ha extra mező van
+      transform: true, // Automatikus típuskonverzió
+    }),
+  );
 
   await app.listen(3000);
 }

@@ -8,9 +8,14 @@ import { CommonModule } from '../common/common.module';
 import { MissionsModule } from '../missions/missions.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]), UsersModule, CommonModule, MissionsModule],
-    providers: [FightService],
-    controllers: [FightController],
-    exports: [FightService],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    UsersModule,
+    CommonModule,
+    MissionsModule,
+  ],
+  providers: [FightService],
+  controllers: [FightController],
+  exports: [FightService],
 })
-export class FightModule { }
+export class FightModule {}

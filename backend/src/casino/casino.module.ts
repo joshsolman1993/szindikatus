@@ -9,4 +9,4 @@ import { User } from '../users/entities/user.entity';
   controllers: [CasinoController],
   providers: [CasinoService],
 })
-export class CasinoModule { }
+export class CasinoModule {}

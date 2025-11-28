@@ -7,12 +7,9 @@ import { AuthModule } from '../auth/auth.module';
 import { ChatController } from './chat.controller';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Message]),
-        AuthModule,
-    ],
-    controllers: [ChatController],
-    providers: [ChatGateway, ChatService],
-    exports: [ChatService, ChatGateway],
+  imports: [TypeOrmModule.forFeature([Message]), AuthModule],
+  controllers: [ChatController],
+  providers: [ChatGateway, ChatService],
+  exports: [ChatService, ChatGateway],
 })
-export class ChatModule { }
+export class ChatModule {}

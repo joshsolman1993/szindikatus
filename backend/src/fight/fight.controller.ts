@@ -4,12 +4,15 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('fight')
 export class FightController {
-    constructor(private readonly fightService: FightService) { }
+  constructor(private readonly fightService: FightService) {}
 
-    @UseGuards(JwtAuthGuard)
-    @Post('attack/:targetId')
-    async attack(@Request() req, @Param('targetId') targetId: string) {
-        const result = await this.fightService.executeFight(req.user.userId, targetId);
-        return result;
-    }
+  @UseGuards(JwtAuthGuard)
+  @Post('attack/:targetId')
+  async attack(@Request() req, @Param('targetId') targetId: string) {
+    const result = await this.fightService.executeFight(
+      req.user.userId,
+      targetId,
+    );
+    return result;
+  }
 }

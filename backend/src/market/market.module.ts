@@ -10,13 +10,13 @@ import { EventsModule } from '../events/events.module';
 import { ChatModule } from '../chat/chat.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([MarketListing, Item, Inventory, User]),
-        EventsModule,
-        ChatModule,
-    ],
-    providers: [MarketService],
-    controllers: [MarketController],
-    exports: [MarketService],
+  imports: [
+    TypeOrmModule.forFeature([MarketListing, Item, Inventory, User]),
+    EventsModule,
+    ChatModule,
+  ],
+  providers: [MarketService],
+  controllers: [MarketController],
+  exports: [MarketService],
 })
-export class MarketModule { }
+export class MarketModule {}
