@@ -9,11 +9,13 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ClansService } from './clans.service';
+import { ClanUpgradeType } from './entities/clan-upgrade.entity';
+import { CLAN_UPGRADES } from './clan-upgrades.constants';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('clans')
 export class ClansController {
-  constructor(private readonly clansService: ClansService) {}
+  constructor(private readonly clansService: ClansService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -44,5 +46,24 @@ export class ClansController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.clansService.findOne(id);
+  }
+
+  // ==================== CLAN UPGRADES ====================
+
+  @Get('upgrades/definitions')
+  getUpgradeDefinitions() {
+    return CLAN_UPGRADES;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/upgrades')
+  getClanUpgrades(@Param('id') id: string) {
+    return this.clansService.getClanUpgrades(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('upgrades/buy')
+  buyUpgrade(@Request() req, @Body('upgradeType') upgradeType: ClanUpgradeType) {
+    return this.clansService.buyUpgrade(req.user.userId, upgradeType);
   }
 }

@@ -6,11 +6,16 @@ import { District } from './entities/district.entity';
 import { Clan } from '../clans/entities/clan.entity';
 import { User } from '../users/entities/user.entity';
 import { EventsModule } from '../events/events.module';
+import { ClansModule } from '../clans/clans.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([District, Clan, User]), EventsModule],
+  imports: [
+    TypeOrmModule.forFeature([District, Clan, User]),
+    EventsModule,
+    ClansModule,
+  ],
   controllers: [TerritoriesController],
   providers: [TerritoriesService],
   exports: [TerritoriesService],
 })
-export class TerritoriesModule {}
+export class TerritoriesModule { }

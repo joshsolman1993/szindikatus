@@ -9,6 +9,9 @@ import { LevelingService } from '../common/services/leveling.service';
 import { TalentId } from '../talents/talents.constants';
 import { MissionsService } from '../missions/missions.service';
 import { MissionRequirementType } from '../missions/entities/mission.entity';
+import { ClansService } from '../clans/clans.service';
+import { ClanUpgradeType } from '../clans/entities/clan-upgrade.entity';
+import { getTrainingGroundXPBonus } from '../clans/clan-upgrades.constants';
 
 interface CombatStats {
   totalStr: number;
@@ -38,7 +41,8 @@ export class FightService {
     private eventsService: EventsService,
     private readonly levelingService: LevelingService,
     private readonly missionsService: MissionsService,
-  ) {}
+    private readonly clansService: ClansService,
+  ) { }
 
   // Validáció: Lehet-e támadni
   canAttack(
@@ -168,8 +172,21 @@ export class FightService {
         attacker.cash = (parseInt(attacker.cash) + moneyStolen).toString();
         defender.cash = (defenderCash - moneyStolen).toString();
 
-        // XP
-        xpGained = GameBalance.FIGHT_XP_REWARD;
+        // XP with TRAINING_GROUND bonus
+        let baseXP = GameBalance.FIGHT_XP_REWARD;
+
+        // Apply TRAINING_GROUND bonus if attacker is in a clan
+        if (attacker.clanId) {
+          const trainingLevel = await this.clansService.getUpgradeLevel(
+            attacker.clanId,
+            ClanUpgradeType.TRAINING_GROUND,
+          );
+          const trainingBonus = getTrainingGroundXPBonus(trainingLevel);
+          xpGained = Math.floor(baseXP * (1 + trainingBonus));
+        } else {
+          xpGained = baseXP;
+        }
+
         attacker.xp += xpGained;
         this.levelingService.checkLevelUp(attacker);
 

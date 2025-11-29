@@ -11,6 +11,9 @@ import { District } from './entities/district.entity';
 import { Clan } from '../clans/entities/clan.entity';
 import { User } from '../users/entities/user.entity';
 import { EventsService } from '../events/events.service';
+import { ClansService } from '../clans/clans.service';
+import { ClanUpgradeType } from '../clans/entities/clan-upgrade.entity';
+import { getFortressDefenseBonus } from '../clans/clan-upgrades.constants';
 
 @Injectable()
 export class TerritoriesService implements OnModuleInit {
@@ -25,7 +28,8 @@ export class TerritoriesService implements OnModuleInit {
     private usersRepository: Repository<User>,
     private dataSource: DataSource,
     private eventsService: EventsService,
-  ) {}
+    private clansService: ClansService,
+  ) { }
 
   async onModuleInit() {
     await this.seedDistricts();
@@ -147,7 +151,15 @@ export class TerritoriesService implements OnModuleInit {
             ? district.ownerClan.name
             : 'Senki';
           district.ownerClan = user.clan;
-          district.defense = Math.floor(district.maxDefense * 0.5); // Reset to 50%
+
+          // Apply FORTRESS bonus: base 50% + (FORTRESS level * 10%)
+          const fortressLevel = await this.clansService.getUpgradeLevel(
+            user.clan.id,
+            ClanUpgradeType.FORTRESS,
+          );
+          const fortressBonus = getFortressDefenseBonus(fortressLevel);
+          const resetPercentage = 0.5 + fortressBonus; // 50% base + bonus
+          district.defense = Math.floor(district.maxDefense * resetPercentage);
 
           message = `ELFOGLALTAD a(z) ${district.name} kerületet!`;
 
@@ -182,10 +194,10 @@ export class TerritoriesService implements OnModuleInit {
           defense: district.defense,
           ownerClan: district.ownerClan
             ? {
-                id: district.ownerClan.id,
-                name: district.ownerClan.name,
-                tag: district.ownerClan.tag,
-              }
+              id: district.ownerClan.id,
+              name: district.ownerClan.name,
+              tag: district.ownerClan.tag,
+            }
             : null,
         },
         user: {

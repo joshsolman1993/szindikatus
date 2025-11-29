@@ -6,6 +6,7 @@ import { User } from '../users/entities/user.entity';
 import { UsersModule } from '../users/users.module';
 import { CommonModule } from '../common/common.module';
 import { MissionsModule } from '../missions/missions.module';
+import { ClansModule } from '../clans/clans.module';
 
 @Module({
   imports: [
@@ -13,9 +14,10 @@ import { MissionsModule } from '../missions/missions.module';
     UsersModule,
     CommonModule,
     MissionsModule,
+    ClansModule,
   ],
   providers: [FightService],
   controllers: [FightController],
   exports: [FightService],
 })
-export class FightModule {}
+export class FightModule { }

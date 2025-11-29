@@ -1,5 +1,27 @@
 # Projekt Napló
 
+## [2025-11-29] - Clan Upgrades & Bank Spending
+- Implementáltam a Klán Fejlesztések (Clan Upgrades) rendszerét:
+  - **Adatbázis:**
+    - Új `ClanUpgrade` entitás (id, clanId, type, level)
+    - Upgrade típusok: FORTRESS, TRAINING_GROUND, BLACK_MARKET_CONN
+  - **Fejlesztések Definíciói:**
+    - **Erőd (FORTRESS):** +10% kerület védelem szintenként (max 10 szint, $50k * level)
+    - **Kiképzőközpont (TRAINING_GROUND):** +2% XP harcokból szintenként (max 10 szint, $100k * level)
+    - **Alvilági Kapcsolatok (BLACK_MARKET_CONN):** -2% piaci adó szintenként (max 5 szint, $75k * level)
+  - **Backend Funkciók:**
+    - `buyUpgrade(leaderId, upgradeType)` - Csak leader vásárolhat, bank pénz levonás, tranzakció
+    - `getClanUpgrades(clanId)` - Összes upgrade lekérdezése
+    - `getUpgradeLevel(clanId, type)` - Specifikus upgrade szint
+  - **Bónuszok Integrálása:**
+    - **TerritoriesService:** FORTRESS bónusz alkalmazása kerület elfoglalásnál (defense reset: 50% + FORTRESS bonus)
+    - **FightService:** TRAINING_GROUND bónusz alkalmazása XP számításnál (base XP * (1 + bonus))
+  - **API Endpoint-ok:**
+    - `GET /clans/upgrades/definitions` - Fejlesztések definíciói
+    - `GET /clans/:id/upgrades` - Klán fejlesztések lekérdezése
+    - `POST /clans/upgrades/buy` - Fejlesztés vásárlás (csak leader)
+- A klán bank mostantól **hasznos**: a fejlesztések növelik a klán erejét és hatékonyságát
+
 ## [2025-11-28] - Security Hardening
 - Implementáltam a biztonsági megerősítéseket:
   - **Rate Limiting (Throttler):**

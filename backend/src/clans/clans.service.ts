@@ -2,21 +2,26 @@ import {
   Injectable,
   ConflictException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Clan } from './entities/clan.entity';
+import { ClanUpgrade, ClanUpgradeType } from './entities/clan-upgrade.entity';
 import { User, ClanRank } from '../users/entities/user.entity';
 import { GameBalance } from '../config/game-balance.config';
+import { CLAN_UPGRADES, calculateUpgradeCost } from './clan-upgrades.constants';
 
 @Injectable()
 export class ClansService {
   constructor(
     @InjectRepository(Clan)
     private clansRepository: Repository<Clan>,
+    @InjectRepository(ClanUpgrade)
+    private clanUpgradesRepository: Repository<ClanUpgrade>,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async create(
     userId: string,
@@ -155,5 +160,127 @@ export class ClansService {
       .getRawMany();
 
     return clans;
+  }
+
+  // ==================== CLAN UPGRADES ====================
+
+  /**
+   * Buy clan upgrade (only leader can buy)
+   */
+  async buyUpgrade(
+    leaderId: string,
+    upgradeType: ClanUpgradeType,
+  ): Promise<{ message: string; newLevel: number; remainingBank: string }> {
+    return await this.clansRepository.manager.transaction(async (manager) => {
+      // Get user and validate leader
+      const user = await manager.findOne(User, {
+        where: { id: leaderId },
+        lock: { mode: 'pessimistic_write' },
+      });
+
+      if (!user || !user.clanId) {
+        throw new BadRequestException('Nem vagy tagja egy bandának sem!');
+      }
+
+      if (user.clanRank !== ClanRank.LEADER) {
+        throw new BadRequestException('Csak a banda vezére vásárolhat fejlesztést!');
+      }
+
+      // Get clan with lock
+      const clan = await manager.findOne(Clan, {
+        where: { id: user.clanId },
+        lock: { mode: 'pessimistic_write' },
+      });
+
+      if (!clan) {
+        throw new NotFoundException('Banda nem található!');
+      }
+
+      // Get or create upgrade
+      let upgrade = await manager.findOne(ClanUpgrade, {
+        where: { clanId: clan.id, type: upgradeType },
+      });
+
+      if (!upgrade) {
+        upgrade = manager.create(ClanUpgrade, {
+          clanId: clan.id,
+          type: upgradeType,
+          level: 0,
+        });
+      }
+
+      // Check max level
+      const definition = CLAN_UPGRADES[upgradeType];
+      if (upgrade.level >= definition.maxLevel) {
+        throw new BadRequestException(
+          `Ez a fejlesztés már elérte a maximum szintet (${definition.maxLevel})!`,
+        );
+      }
+
+      // Calculate cost
+      const cost = calculateUpgradeCost(upgradeType, upgrade.level);
+      const clanBank = parseInt(clan.bank);
+
+      if (clanBank < cost) {
+        throw new BadRequestException(
+          `Nincs elég pénz a banda kasszájában! Szükséges: $${cost.toLocaleString()}, Elérhető: $${clanBank.toLocaleString()}`,
+        );
+      }
+
+      // Deduct from bank
+      clan.bank = (clanBank - cost).toString();
+      await manager.save(Clan, clan);
+
+      // Upgrade level
+      upgrade.level += 1;
+      await manager.save(ClanUpgrade, upgrade);
+
+      return {
+        message: `${definition.name} sikeresen fejlesztve ${upgrade.level}. szintre!`,
+        newLevel: upgrade.level,
+        remainingBank: clan.bank,
+      };
+    });
+  }
+
+  /**
+   * Get all clan upgrades
+   */
+  async getClanUpgrades(clanId: string): Promise<ClanUpgrade[]> {
+    const upgrades = await this.clanUpgradesRepository.find({
+      where: { clanId },
+    });
+
+    // Ensure all upgrade types exist (even if level 0)
+    const allUpgrades: ClanUpgrade[] = [];
+    for (const type of Object.values(ClanUpgradeType)) {
+      const existing = upgrades.find((u) => u.type === type);
+      if (existing) {
+        allUpgrades.push(existing);
+      } else {
+        // Create placeholder (not saved to DB)
+        const placeholder = new ClanUpgrade();
+        placeholder.clanId = clanId;
+        placeholder.type = type;
+        placeholder.level = 0;
+        allUpgrades.push(placeholder);
+      }
+    }
+
+    return allUpgrades;
+  }
+
+  /**
+   * Get specific upgrade level for a clan
+   */
+  async getUpgradeLevel(
+    clanId: string,
+    upgradeType: ClanUpgradeType,
+  ): Promise<number> {
+    const upgrade = await this.clanUpgradesRepository.findOne({
+      where: { clanId, type: upgradeType },
+    });
+
+    return upgrade ? upgrade.level : 0;
   }
 }
