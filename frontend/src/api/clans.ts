@@ -6,8 +6,15 @@ export interface Clan {
     tag: string;
     description: string;
     leaderId: string;
+    bank: string;
     members?: any[];
     createdAt: string;
+}
+
+export interface ClanUpgrade {
+    id?: string;
+    type: 'FORTRESS' | 'TRAINING_GROUND' | 'BLACK_MARKET_CONN';
+    level: number;
 }
 
 export const getClans = async (): Promise<Clan[]> => {
@@ -32,5 +39,20 @@ export const joinClan = async (id: string): Promise<any> => {
 
 export const leaveClan = async (): Promise<any> => {
     const response = await apiClient.post('/clans/leave');
+    return response.data;
+};
+
+export const getClanUpgrades = async (clanId: string): Promise<ClanUpgrade[]> => {
+    const response = await apiClient.get(`/clans/${clanId}/upgrades`);
+    return response.data;
+};
+
+export const getUpgradeDefinitions = async (): Promise<any> => {
+    const response = await apiClient.get('/clans/upgrades/definitions');
+    return response.data;
+};
+
+export const buyUpgrade = async (upgradeType: string): Promise<any> => {
+    const response = await apiClient.post('/clans/upgrades/buy', { upgradeType });
     return response.data;
 };
