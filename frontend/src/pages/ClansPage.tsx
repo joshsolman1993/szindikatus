@@ -3,8 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { DashboardLayout } from '../components/dashboard/DashboardLayout';
 import { ToastContainer } from '../components/ui/Toast';
 import { useToast } from '../hooks/useToast';
-import { getClans, createClan, joinClan, leaveClan, getClanDetails, getClanUpgrades, buyUpgrade, getUpgradeDefinitions, type Clan, type ClanUpgrade } from '../api/clans';
-import { Users, Shield, LogOut, Plus, Crown, TrendingUp, Building, Zap } from 'lucide-react';
+import { getClans, createClan, joinClan, leaveClan, getClanDetails, type Clan } from '../api/clans';
+import { Users, Shield, LogOut, Plus, Crown } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 
@@ -15,12 +15,9 @@ export const ClansPage = () => {
     const { toasts, addToast, removeToast } = useToast();
     const [clans, setClans] = useState<Clan[]>([]);
     const [myClan, setMyClan] = useState<Clan | null>(null);
-    const [upgrades, setUpgrades] = useState<ClanUpgrade[]>([]);
-    const [upgradeDefinitions, setUpgradeDefinitions] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [createForm, setCreateForm] = useState({ name: '', tag: '', description: '' });
     const [isCreating, setIsCreating] = useState(false);
-    const [isUpgrading, setIsUpgrading] = useState(false);
 
     useEffect(() => {
         loadData();
@@ -30,14 +27,8 @@ export const ClansPage = () => {
         setLoading(true);
         try {
             if (user?.clanId) {
-                const [clanData, upgradesData, definitionsData] = await Promise.all([
-                    getClanDetails(user.clanId),
-                    getClanUpgrades(user.clanId),
-                    getUpgradeDefinitions()
-                ]);
+                const clanData = await getClanDetails(user.clanId);
                 setMyClan(clanData);
-                setUpgrades(upgradesData);
-                setUpgradeDefinitions(definitionsData);
             } else {
                 const clansList = await getClans();
                 setClans(clansList);
@@ -46,21 +37,6 @@ export const ClansPage = () => {
             addToast('Hiba az adatok betöltésekor.', 'error');
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleBuyUpgrade = async (type: string) => {
-        if (!confirm('Biztosan megveszed ezt a fejlesztést?')) return;
-
-        setIsUpgrading(true);
-        try {
-            await buyUpgrade(type);
-            addToast('Fejlesztés sikeres!', 'success');
-            await loadData(); // Reload all data to update bank and levels
-        } catch (error: any) {
-            addToast(error.response?.data?.message || 'Hiba a vásárláskor.', 'error');
-        } finally {
-            setIsUpgrading(false);
         }
     };
 
@@ -157,71 +133,6 @@ export const ClansPage = () => {
                                 ))}
                             </div>
                         </div>
-
-                        {/* CLAN TREASURY & UPGRADES */}
-                        <div className="bg-surface border border-gray-800 rounded-lg p-6">
-                            <div className="flex justify-between items-center mb-6">
-                                <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                                    <Building className="w-6 h-6 text-secondary" />
-                                    Klán Kincstár & Fejlesztések
-                                </h3>
-                                <div className="bg-gray-900 px-4 py-2 rounded border border-gray-800 text-right">
-                                    <div className="text-xs text-gray-400">Bank Egyenleg</div>
-                                    <div className="text-xl font-bold text-green-400">${parseInt(myClan.bank || '0').toLocaleString()}</div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                {upgradeDefinitions && Object.values(upgradeDefinitions).map((def: any) => {
-                                    const currentUpgrade = upgrades.find(u => u.type === def.type);
-                                    const currentLevel = currentUpgrade?.level || 0;
-                                    const nextCost = def.baseCost * (currentLevel + 1);
-                                    const isMaxLevel = currentLevel >= def.maxLevel;
-                                    const canAfford = parseInt(myClan.bank || '0') >= nextCost;
-                                    const isLeader = myClan.leaderId === user?.id;
-
-                                    return (
-                                        <div key={def.type} className="bg-gray-900/50 border border-gray-800 rounded-lg p-5 flex flex-col">
-                                            <div className="flex justify-between items-start mb-4">
-                                                <div className="p-3 bg-gray-800 rounded-lg">
-                                                    {def.type === 'FORTRESS' && <Shield className="w-6 h-6 text-blue-400" />}
-                                                    {def.type === 'TRAINING_GROUND' && <Zap className="w-6 h-6 text-yellow-400" />}
-                                                    {def.type === 'BLACK_MARKET_CONN' && <TrendingUp className="w-6 h-6 text-green-400" />}
-                                                </div>
-                                                <div className="text-xs font-bold bg-gray-800 px-2 py-1 rounded text-gray-300">
-                                                    Lvl {currentLevel} / {def.maxLevel}
-                                                </div>
-                                            </div>
-
-                                            <h4 className="text-lg font-bold text-white mb-1">{def.name}</h4>
-                                            <p className="text-sm text-gray-400 mb-4 flex-grow">{def.description}</p>
-
-                                            <div className="mt-auto">
-                                                <div className="text-xs text-gray-500 mb-1">Bónusz: <span className="text-primary">{def.bonus}</span></div>
-
-                                                {isMaxLevel ? (
-                                                    <Button disabled className="w-full bg-gray-800 text-gray-500 border-gray-700">
-                                                        Max Szint
-                                                    </Button>
-                                                ) : (
-                                                    <Button
-                                                        onClick={() => handleBuyUpgrade(def.type)}
-                                                        disabled={!isLeader || !canAfford || isUpgrading}
-                                                        className={`w-full ${!canAfford ? 'opacity-50' : ''}`}
-                                                        variant={isLeader ? 'primary' : 'outline'}
-                                                    >
-                                                        {isUpgrading ? 'Vásárlás...' : `Fejlesztés ($${nextCost.toLocaleString()})`}
-                                                    </Button>
-                                                )}
-                                                {!isLeader && !isMaxLevel && (
-                                                    <div className="text-xs text-center text-gray-600 mt-2">Csak a Vezér fejleszthet</div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
                     </div>
                 ) : (
                     // NO CLAN VIEW
@@ -268,7 +179,6 @@ export const ClansPage = () => {
                                             <span className="text-red-400 font-bold">${CLAN_COST}</span>
                                         </div>
                                         <Button
-                                            id="create-clan-btn"
                                             type="submit"
                                             className="w-full"
                                             disabled={isCreating || parseInt(user?.cash || '0') < CLAN_COST}
